@@ -31,5 +31,7 @@ def run_tests():
         cl.info("\u001b[32;1mGeneral statistical tests passed for "
                 "parameters {}\u001b[0m".format(parameters))
     else:
-        cl.info("\u001b[31;1mGeneral statistical tests failed for "
-                "parameters {}\u001b[0m".format(parameters))
+        # cl.info("\u001b[31;1mGeneral statistical tests failed for "
+        #         "parameters {}\u001b[0m".format(parameters))
+        cl.info("General statistical tests failed for "
+                "parameters {}".format(parameters))
