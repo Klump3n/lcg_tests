@@ -15,6 +15,6 @@ similar suites for that matter). Do not expect new tests.
 
 ## Usage
 
-Run ```check_lcg.py```. For a bit more information about which tests are failing
-and which are succeeding you can use ```check_lcg.py -l verbose```.
+Run ```lcong.py```. For a bit more information about which tests are failing
+and which are succeeding you can use ```lcong.py -l verbose```.
 
