@@ -9,7 +9,7 @@ choices of paramters influences the quality of the random numbers.
 import argparse
 
 from util.logging.logger import CoreLog as cl
-from util.opt.greet import lcg_tester_text
+from util.opt.greet import greeting
 
 import modules.run_tests as run_tests
 
@@ -45,7 +45,7 @@ def greet():
     Print a greeting.
 
     """
-    print(lcg_tester_text)
+    print(greeting(text="LConG"))
 
 def main():
     """

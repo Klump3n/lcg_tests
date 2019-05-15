@@ -83,7 +83,7 @@ class LogWrapper(object):
     @classmethod
     def debug(cls, msg):
         cls._check_inst()
-        cls._wrapper_instance.debug("{}".format(msg))
+        cls._wrapper_instance.debug("\u001b[36m{}\u001b[0m".format(msg))
 
     @classmethod
     def verbose(cls, msg):

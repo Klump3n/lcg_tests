@@ -11,11 +11,18 @@ def gen_params():
     Generate a set of parameters for the LCG.
 
     """
+    # cpp
+    m = 2**31
+    a = 1103515245
+    c = 12345
+
+    x0 = 54911
+
     params = dict()
-    params["x0"] = 1
-    params["a"] = 5
-    params["c"] = 0
-    params["m"] = 9
+    params["x0"] = x0 # 1
+    params["a"] = a # 5
+    params["c"] = c # 0
+    params["m"] = m # 9
 
     return params
 
