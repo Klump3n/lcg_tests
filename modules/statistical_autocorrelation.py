@@ -21,7 +21,7 @@ def autocorrelate_tau(bin_seq, tau):
     """
     seq1 = bin_seq[0:5000]
     seq2 = bin_seq[tau:tau+5000]
-    return np.sum(seq1 ^ seq2)
+    return np.sum(seq1 ^ seq2)  # XOR of two lists
 
 def autocorrelation_passed(binary_sequence):
     """

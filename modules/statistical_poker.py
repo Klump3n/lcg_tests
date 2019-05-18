@@ -2,6 +2,8 @@
 """
 Implements the poker test.
 
+http://csrc.nist.gov/publications/fips/fips1401.htm
+
 """
 from util.logging.logger import CoreLog as cl
 

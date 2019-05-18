@@ -2,6 +2,8 @@
 """
 Perform a runs test on the binary sequence.
 
+http://csrc.nist.gov/publications/fips/fips1401.htm
+
 """
 import numpy as np
 
