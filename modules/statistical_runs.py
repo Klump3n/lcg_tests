@@ -5,7 +5,11 @@ Perform a runs test on the binary sequence.
 """
 import numpy as np
 
+import multiprocessing
+from itertools import repeat
+
 from util.logging.logger import CoreLog as cl
+
 
 def runs_instance(binary_sequence, length=1):
     """
@@ -34,6 +38,28 @@ def runs_instance(binary_sequence, length=1):
             one_count = instance_count[it]
 
     return zero_count, one_count
+
+def check_length(binary_sequence, length, lower_limit, upper_limit):
+    """
+    Run a check for a length.
+
+    """
+    test_passed = True
+
+    zc, oc = runs_instance(binary_sequence, length)
+
+    for count in [zc, oc]:
+        if not (lower_limit <= count) and not (count <= upper_limit):
+            test_passed = False
+
+    if test_passed:
+        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+            zc, oc, length))
+    else:
+        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+            zc, oc, length))
+
+    return test_passed
 
 def runs_passed(binary_sequence):
     """
@@ -113,10 +139,13 @@ def runs_passed(binary_sequence):
     zc6p = 0
     oc6p = 0
 
-    for it in range(6, 34):
-        zc, oc = runs_instance(binary_sequence, it)
-        zc6p += zc
-        oc6p += oc
+    lengths = range(6, 34)
+    with multiprocessing.Pool(4) as p:
+        res = p.starmap(runs_instance, zip(repeat(binary_sequence), lengths))
+
+    for r in res:
+        zc6p += r[0]
+        oc6p += r[1]
 
     for count in [zc6p, oc6p]:
         if not (90 <= count) or not (count <= 223):
@@ -130,6 +159,7 @@ def runs_passed(binary_sequence):
         return test_passed
 
     cl.verbose("Runs test passed")
+
     return test_passed
 
 def long_runs_passed(binary_sequence):
