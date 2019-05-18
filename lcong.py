@@ -11,7 +11,7 @@ import unittest
 import argparse
 
 from util.logging.logger import CoreLog as cl
-from util.opt.greet import greeting
+from util.opt.greet import ngreeting
 
 import modules.run_tests as run_tests
 
@@ -59,7 +59,8 @@ def greet():
     Print a greeting.
 
     """
-    print(greeting(text="LConG"))
+    print(ngreeting())
+    # print(greeting(text="LConG"))
 
 def main():
     """

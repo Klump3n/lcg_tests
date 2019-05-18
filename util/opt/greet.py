@@ -17,6 +17,42 @@ Greeting function.
 import shutil
 
 
+def ngreeting():
+    """
+    Create a colorful greeing string.
+
+    """
+    # colors
+    blue = "\u001b[38;5;61m"
+    green = "\u001b[38;5;107m"
+    orange = "\u001b[38;5;209m"
+
+    reset = "\u001b[0m"
+
+    color1 = blue
+    color2 = green
+    color3 = orange
+
+    left = "  {}".format(reset)
+
+    cotri = [
+        "{}  {}){}a,".format(left, color1, color3),
+        "{}  {})/{}#L,".format(left, color1, color3),
+        "{}  {}v({}\"###a".format(left, color1, color3),
+        "{}  {}vv,{}\"####a,".format(left, color1, color3),
+        "{}  {}vv( {}4#####L,".format(left, color1, color3),
+        "{} {}=vvv  {}!!4#####a".format(left, color1, color3),
+        "{} {}=vv>       {}!!!##a,.".format(left, color1, color3),
+        "{} {}=v> {}sXXXXXXXsssss*{}{}*-".format(left, color1, color2, reset, color3),
+        "{} {}%>{}_XXXXXXXX7\"\"\"\"".format(left, color1, color2),
+        "{} {}v{}J7\"\"\"\"           {}mp".format(left, color1, color2, reset)
+    ]
+    greet = "\n"
+    for s in cotri:
+        greet += "{}\n".format(s)
+
+    return greet
+
 def greeting(text=None):
     """
     Create a colorful greeting string.
@@ -98,4 +134,5 @@ def greeting(text=None):
 
 
 if __name__ == "__main__":
+    print(ngreeting())
     print(greeting("flte"))
