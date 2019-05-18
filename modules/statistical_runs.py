@@ -39,27 +39,27 @@ def runs_instance(binary_sequence, length=1):
 
     return zero_count, one_count
 
-def check_length(binary_sequence, length, lower_limit, upper_limit):
-    """
-    Run a check for a length.
+# def check_length(binary_sequence, length, lower_limit, upper_limit):
+#     """
+#     Run a check for a length.
 
-    """
-    test_passed = True
+#     """
+#     test_passed = True
 
-    zc, oc = runs_instance(binary_sequence, length)
+#     zc, oc = runs_instance(binary_sequence, length)
 
-    for count in [zc, oc]:
-        if not (lower_limit <= count) and not (count <= upper_limit):
-            test_passed = False
+#     for count in [zc, oc]:
+#         if not (lower_limit <= count) and not (count <= upper_limit):
+#             test_passed = False
 
-    if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
-            zc, oc, length))
-    else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
-            zc, oc, length))
+#     if test_passed:
+#         cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+#             zc, oc, length))
+#     else:
+#         cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+#             zc, oc, length))
 
-    return test_passed
+#     return test_passed
 
 def runs_passed(binary_sequence):
     """
@@ -162,20 +162,38 @@ def runs_passed(binary_sequence):
 
     return test_passed
 
+def long_runs_instance(binary_sequence, length):
+    """
+    One instance (length) of the long runs test.
+
+    """
+    test_passed = True
+
+    zeros = "0"*length
+    if zeros in binary_sequence:
+        cl.verbose_warning("length {} of 0 in binary_sequence".format(length))
+        test_passed = False
+
+    ones = "1"*length
+    if ones in binary_sequence:
+        cl.verbose_warning("length {} of 1 in binary_sequence".format(length))
+        test_passed = False
+
+    return test_passed
+
 def long_runs_passed(binary_sequence):
     """
     Perform a runs test with length 34 or more.
 
     """
     test_passed = True
-    for length in range(34, len(binary_sequence)):
-        zeros = "0"*length
-        ones = "1"*length
-        if zeros in binary_sequence:
-            cl.verbose_warning("length {} of 0 in binary_sequence".format(length))
-            test_passed = False
-        if ones in binary_sequence:
-            cl.verbose_warning("length {} of 1 in binary_sequence".format(length))
+
+    lengths = range(34, len(binary_sequence))
+    with multiprocessing.Pool(4) as p:
+        res = p.starmap(long_runs_instance, zip(repeat(binary_sequence), lengths))
+
+    for r in res:
+        if r is False:
             test_passed = False
 
     cl.verbose("Long runs test passed")
