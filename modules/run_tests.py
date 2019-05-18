@@ -17,7 +17,9 @@ def run_tests():
 
     """
     parameters = gpn.gen_params()
-    binary_sequence = gpn.gen_nums(parameters)
+    nums = gpn.gen_nums(parameters)
+    bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
+    binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
     general_results = list()
 
@@ -31,7 +33,7 @@ def run_tests():
         cl.info("\u001b[32;1mGeneral statistical tests passed for "
                 "parameters {}\u001b[0m".format(parameters))
     else:
-        # cl.info("\u001b[31;1mGeneral statistical tests failed for "
-        #         "parameters {}\u001b[0m".format(parameters))
-        cl.info("General statistical tests failed for "
-                "parameters {}".format(parameters))
+        cl.info("\u001b[31;1mGeneral statistical tests failed for "
+                "parameters {}\u001b[0m".format(parameters))
+        # cl.info("General statistical tests failed for "
+        #         "parameters {}".format(parameters))

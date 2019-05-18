@@ -33,8 +33,7 @@ def poker_passed(binary_sequence):
         cj = 8*int(b[4*j]) + 4*int(b[4*j+1]) + 2*int(b[4*j+2]) + int(b[4*j+3])
         f[cj] += 1
 
-    print(f, f*f, sum(f*f), 15/20000*sum(f*f))
-    res = 15/20000 * sum([x*x for x in f]) - 5000
+    res = 16/5000 * sum([x*x for x in f]) - 5000
 
     lower_bound = 1.03
     upper_bound = 57.4
