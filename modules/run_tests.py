@@ -8,6 +8,7 @@ import modules.gen_parameters_and_numbers as gpn
 
 import modules.statistical_monobit as monobit
 import modules.statistical_poker as poker
+import modules.statistical_runs as runs
 
 import numpy as np
 
@@ -25,6 +26,9 @@ def run_tests():
 
     cl.verbose("Performing MONOBIT test")
     general_results.append(monobit.monobit_passed(binary_sequence))
+
+    cl.verbose("Performing POKER test")
+    general_results.append(poker.poker_passed(binary_sequence))
 
     cl.verbose("Performing POKER test")
     general_results.append(poker.poker_passed(binary_sequence))
