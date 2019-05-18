@@ -9,6 +9,7 @@ import modules.gen_parameters_and_numbers as gpn
 import modules.statistical_monobit as monobit
 import modules.statistical_poker as poker
 import modules.statistical_runs as runs
+import modules.statistical_autocorrelation as ac
 
 import numpy as np
 
@@ -35,6 +36,9 @@ def run_tests():
 
     cl.verbose("Performing LONG RUNS test")
     general_results.append(runs.long_runs_passed(binary_sequence))
+
+    cl.verbose("Performing AUTOCORRELATION test")
+    general_results.append(ac.autocorrelation_passed(binary_sequence))
 
     if np.all(general_results):
         cl.info("\u001b[32;1mGeneral statistical tests passed for "

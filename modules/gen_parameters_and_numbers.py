@@ -13,6 +13,7 @@ def gen_params():
     Generate a set of parameters for the LCG.
 
     """
+
     # cpp
     # x0 = 5491                   # fails
     x0 = 549                   # works
@@ -25,6 +26,12 @@ def gen_params():
     # m = 16
     # a = 1
     # c = 1
+
+    # # bad parameters
+    # x0 = 1
+    # a = 5
+    # c = 0
+    # m = 9
 
     params = dict()
     params["x0"] = x0 # 1

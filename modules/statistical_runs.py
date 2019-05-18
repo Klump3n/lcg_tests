@@ -128,6 +128,8 @@ def runs_passed(binary_sequence):
         cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
             zc6p, oc6p, "6+"))
         return test_passed
+
+    cl.verbose("Runs test passed")
     return test_passed
 
 def long_runs_passed(binary_sequence):
@@ -146,4 +148,5 @@ def long_runs_passed(binary_sequence):
             cl.verbose_warning("length {} of 1 in binary_sequence".format(length))
             test_passed = False
 
+    cl.verbose("Long runs test passed")
     return test_passed
