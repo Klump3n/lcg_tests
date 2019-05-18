@@ -14,8 +14,8 @@ def gen_params():
 
     """
     # cpp
-    x0 = 5491                   # fails
-    # x0 = 549                   # works
+    # x0 = 5491                   # fails
+    x0 = 549                   # works
     m = 2**31
     a = 1103515245
     c = 12345

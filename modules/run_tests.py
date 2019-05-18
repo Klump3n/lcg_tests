@@ -30,8 +30,11 @@ def run_tests():
     cl.verbose("Performing POKER test")
     general_results.append(poker.poker_passed(binary_sequence))
 
-    cl.verbose("Performing POKER test")
-    general_results.append(poker.poker_passed(binary_sequence))
+    cl.verbose("Performing RUNS test")
+    general_results.append(runs.runs_passed(binary_sequence))
+
+    cl.verbose("Performing LONG RUNS test")
+    general_results.append(runs.long_runs_passed(binary_sequence))
 
     if np.all(general_results):
         cl.info("\u001b[32;1mGeneral statistical tests passed for "
