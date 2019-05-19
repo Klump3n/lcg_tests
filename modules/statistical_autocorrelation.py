@@ -33,24 +33,19 @@ def autocorrelation_passed(binary_sequence):
     b = np.asarray(list(binary_sequence), dtype=int)
 
     seqset = int(len(binary_sequence) / 4)
-    # tau = range(0, 100)
     tau = range(1, seqset)
 
     with multiprocessing.Pool(4) as p:
         res = p.starmap(autocorrelate_tau, zip(repeat(b), tau))
 
     for t, ctau in enumerate(res):
-        # NOTE: I DIVIDED BY 2 TO ACCOUNT FOR THE CHANGE IN THE AUTOCORRELATION
-        # FUNCTION (TIMES INSTEAD OF XOR)
-        # if not (2326/2 < ctau) or not (ctau < 2674/2):
-
         if not (2326 < ctau) or not (ctau < 2674):
-            cl.verbose_warning("Autocorrelation failed for tau = {}, "
+            cl.verbose_warning("Autocorrelation test failed for tau = {}, "
                                "2326 !< {} !< 2674".format(t, ctau))
             test_passed = False
 
     if test_passed:
-        cl.verbose("Autocorrelation test passed")
+        cl.verbose("Autocorrelation test passed, no correlations found")
     else:
         cl.verbose_warning("Autocorrelation test failed")
 

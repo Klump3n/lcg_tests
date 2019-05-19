@@ -62,7 +62,6 @@ def greet():
 
     """
     print(ngreeting())
-    # print(greeting(text="LConG"))
 
 def main():
     """
@@ -84,7 +83,7 @@ def main():
     # if we have a random data file present we can parse that
     if args.file:
         binary_sequence = parse_file.parse_from_file(args.file)
-        cl.info("Testing random numbers from file")
+        cl.info("Testing random numbers from file {}".format(args.file))
     else:
         cl.info("Starting LCG testing")
 

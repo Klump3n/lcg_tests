@@ -57,5 +57,3 @@ def run_tests(numbers_from_file=None):
     else:
         cl.info("\u001b[31;1mGeneral statistical tests failed for "
                 "{}\u001b[0m".format(source))
-        # cl.info("General statistical tests failed for "
-        #         "parameters {}".format(parameters))

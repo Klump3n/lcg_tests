@@ -11,7 +11,7 @@ def parse_from_file(file_name):
 
     """
     data = str()
-    binary_data = np.genfromtxt(file_name, dtype=str, delimiter="")
+    binary_data = np.genfromtxt(file_name, dtype=str, delimiter=" ")
 
     if len(binary_data.shape) == 1:
         for i in binary_data:
