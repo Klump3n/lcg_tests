@@ -13,6 +13,7 @@ import argparse
 from util.logging.logger import CoreLog as cl
 from util.opt.greet import ngreeting
 
+import modules.parse_file as parse_file
 import modules.run_tests as run_tests
 
 def parse_arguments():
@@ -28,6 +29,7 @@ def parse_arguments():
                         choices=["quiet", "debug", "verbose", "info",
                                  "warning", "error", "critical"],
                         default="info")
+    parser.add_argument("-f", "--file", help="perform tests on file")
     parser.add_argument("-t", "--test", help="perform unittests",
                         action="store_true")
     args = parser.parse_args()
@@ -77,9 +79,17 @@ def main():
     logging_level = args.log
     setup_loggers(logging_level)
 
-    # run the tests for the LCG
-    cl.info("Starting LCG testing")
-    run_tests.run_tests()
+    binary_sequence = None      # instantiate to None
+
+    # if we have a random data file present we can parse that
+    if args.file:
+        binary_sequence = parse_file.parse_from_file(args.file)
+        cl.info("Testing random numbers from file")
+    else:
+        cl.info("Starting LCG testing")
+
+    # run the tests for the LCG (or the random data provided)
+    run_tests.run_tests(binary_sequence)
 
 if __name__ == "__main__":
     main()

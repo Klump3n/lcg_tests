@@ -83,10 +83,10 @@ def runs_passed(binary_sequence):
         if not (2267 <= count) and not (count <= 2733):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc1, oc1, 1))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc1, oc1, 1))
         return test_passed
 
@@ -95,10 +95,10 @@ def runs_passed(binary_sequence):
         if not (1079 <= count) or not (count <= 1421):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc2, oc2, 2))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc2, oc2, 2))
         return test_passed
 
@@ -107,10 +107,10 @@ def runs_passed(binary_sequence):
         if not (502 <= count) or not (count <= 748):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc3, oc3, 3))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc3, oc3, 3))
         return test_passed
 
@@ -119,10 +119,10 @@ def runs_passed(binary_sequence):
         if not (223 <= count) or not (count <= 402):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc4, oc4, 4))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc4, oc4, 4))
         return test_passed
 
@@ -131,10 +131,10 @@ def runs_passed(binary_sequence):
         if not (90 <= count) or not (count <= 223):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc5, oc5, 5))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc5, oc5, 5))
         return test_passed
 
@@ -153,14 +153,14 @@ def runs_passed(binary_sequence):
         if not (90 <= count) or not (count <= 223):
             test_passed = False
     if test_passed:
-        cl.verbose("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc6p, oc6p, "6+"))
     else:
-        cl.verbose_warning("Runs test: {} of 0 and {} of 1 of length {}".format(
+        cl.verbose_warning("Runs test: {} 0 runs and {} 1 runs of length {}".format(
             zc6p, oc6p, "6+"))
         return test_passed
 
-    cl.verbose("Runs test passed")
+    cl.verbose("Runs test passed, all within tolerance")
 
     return test_passed
 
@@ -198,5 +198,5 @@ def long_runs_passed(binary_sequence):
         if r is False:
             test_passed = False
 
-    cl.verbose("Long runs test passed")
+    cl.verbose("Long runs test passed, no long runs")
     return test_passed

@@ -12,7 +12,47 @@ def gen_params():
     """
     Generate a set of parameters for the LCG.
 
+    APPARENTLY
+
+    m=2**k
+    a=4c+1
+
     """
+
+    paramlist = list()
+
+    for i in range(100):
+
+        # paper
+        x0 = 1 + i
+        a = 33                  # 231
+        c = 0
+        m = 251
+
+    # microsoft
+    x0 = 1 + i
+    a = 214013
+    c = 2531011
+    m = 2**31
+
+        # # cpp
+        # # x0 = 5491                   # fails
+        # x0 = 549                   # works
+        # m = 2**31
+        # a = 1103515245
+        # c = 12345
+
+        # # testing; this produces a consecutive list of 0 to 15 over and over again
+        # x0 = 0
+        # m = 16
+        # a = 1
+        # c = 1
+
+    # # bad parameters
+    # x0 = 1
+    # a = 5
+    # c = 0
+    # m = 9
 
     # cpp
     # x0 = 5491                   # fails
@@ -21,17 +61,6 @@ def gen_params():
     a = 1103515245
     c = 12345
 
-    # # testing; this produces a consecutive list of 0 to 15 over and over again
-    # x0 = 0
-    # m = 16
-    # a = 1
-    # c = 1
-
-    # # bad parameters
-    # x0 = 1
-    # a = 5
-    # c = 0
-    # m = 9
 
     params = dict()
     params["x0"] = x0 # 1
@@ -39,6 +68,22 @@ def gen_params():
     params["c"] = c # 0
     params["m"] = m # 9
 
+        # paramlist.append(params)
+
+
+    # for x0 in range(1,10):
+    #     for a in range(1,10):
+    #         for c in range(1,10):
+    #             for n in range(1,4):
+    #                 m = 2**n
+    #                 params = dict()
+    #                 params["x0"] = x0 # 1
+    #                 params["a"] = a # 5
+    #                 params["c"] = c # 0
+    #                 params["m"] = m # 9
+
+    #                 paramlist.append(params)
+    # return paramlist
     return params
 
 def gen_expected_statistic(modulus):

@@ -37,4 +37,5 @@ def poker_passed(binary_sequence):
         cl.verbose_warning("Poker test FAILED, result is {:.2f}".format(res))
         cl.verbose_warning("The result should be between {:.2f} and {:.1f}".format(
             lower_bound, upper_bound))
+        cl.verbose_warning(f*f)
         return False

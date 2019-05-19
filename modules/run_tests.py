@@ -13,15 +13,21 @@ import modules.statistical_autocorrelation as ac
 
 import numpy as np
 
-def run_tests():
+def run_tests(numbers_from_file=None):
     """
     Run the tests for the LCG.
 
     """
-    parameters = gpn.gen_params()
-    nums = gpn.gen_nums(parameters)
-    bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
-    binary_sequence = gpn.gen_binary_sequence(bin_nums)
+    if numbers_from_file:
+        binary_sequence = numbers_from_file
+
+    else:
+        parameters = gpn.gen_params()
+
+        nums = gpn.gen_nums(parameters)
+
+        bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
+        binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
     general_results = list()
 
@@ -40,11 +46,16 @@ def run_tests():
     cl.verbose("Performing AUTOCORRELATION test")
     general_results.append(ac.autocorrelation_passed(binary_sequence))
 
+    if numbers_from_file:
+        source = "random data from file"
+    else:
+        source = "parameters {}".format(parameters)
+
     if np.all(general_results):
         cl.info("\u001b[32;1mGeneral statistical tests passed for "
-                "parameters {}\u001b[0m".format(parameters))
+                "{}\u001b[0m".format(source))
     else:
         cl.info("\u001b[31;1mGeneral statistical tests failed for "
-                "parameters {}\u001b[0m".format(parameters))
+                "{}\u001b[0m".format(source))
         # cl.info("General statistical tests failed for "
         #         "parameters {}".format(parameters))
