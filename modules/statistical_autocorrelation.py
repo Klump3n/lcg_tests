@@ -38,15 +38,20 @@ def autocorrelation_passed(binary_sequence):
     with multiprocessing.Pool(4) as p:
         res = p.starmap(autocorrelate_tau, zip(repeat(b), tau))
 
+    failcount = 0
+
     for t, ctau in enumerate(res):
         if not (2326 < ctau) or not (ctau < 2674):
-            cl.verbose_warning("Autocorrelation test failed for tau = {}, "
-                               "2326 !< {} !< 2674".format(t, ctau))
+            # cl.verbose_warning("Autocorrelation test failed for tau = {}, "
+            #                    "2326 !< {} !< 2674".format(t, ctau))
             test_passed = False
+            failcount += 1
 
     if test_passed:
         cl.verbose("Autocorrelation test passed, no correlations found")
     else:
-        cl.verbose_warning("Autocorrelation test failed")
+        cl.verbose_warning("Autocorrelation test failed "
+                           "for {}/{} sequences".format(
+                               failcount, len(tau)))
 
     return test_passed

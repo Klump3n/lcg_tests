@@ -19,34 +19,22 @@ def gen_params():
 
     """
 
-    paramlist = list()
+    # # paper
+    # x0 = 1 + i
+    # a = 33                  # 231
+    # c = 0
+    # m = 251
 
-    for i in range(100):
+    # # microsoft
+    # x0 = 1 + i
+    # a = 214013
+    # c = 2531011
+    # m = 2**31
 
-        # paper
-        x0 = 1 + i
-        a = 33                  # 231
-        c = 0
-        m = 251
-
-    # microsoft
-    x0 = 1 + i
-    a = 214013
-    c = 2531011
-    m = 2**31
-
-        # # cpp
-        # # x0 = 5491                   # fails
-        # x0 = 549                   # works
-        # m = 2**31
-        # a = 1103515245
-        # c = 12345
-
-        # # testing; this produces a consecutive list of 0 to 15 over and over again
-        # x0 = 0
-        # m = 16
-        # a = 1
-        # c = 1
+    x0 = 1231551
+    m = 2**35
+    a = 2**18 + 1
+    c = 3
 
     # # bad parameters
     # x0 = 1
@@ -54,12 +42,12 @@ def gen_params():
     # c = 0
     # m = 9
 
-    # cpp
-    # x0 = 5491                   # fails
-    x0 = 549                   # works
-    m = 2**31
-    a = 1103515245
-    c = 12345
+    # # cpp
+    # # x0 = 5491                   # fails
+    # x0 = 549                   # works
+    # m = 2**31
+    # a = 1103515245
+    # c = 12345
 
 
     params = dict()
