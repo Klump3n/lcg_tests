@@ -31,16 +31,23 @@ def gen_params():
     # c = 2531011
     # m = 2**31
 
-    x0 = 1231551
-    m = 2**35
-    a = 2**18 + 1
-    c = 3
+    # x0 = 1231551
+    # m = 2**35
+    # a = 2**18 + 1
+    # c = 3
 
     # # bad parameters
     # x0 = 1
     # a = 5
     # c = 0
     # m = 9
+
+    # THIS WORKS
+    # x0 was random, a, c correct, m = m - 1 (Knuth, Eq. (38))
+    x0 = 112312219              # random
+    a = 65539
+    c = 0
+    m = 2**31 - 1               # normally 2**31
 
     # # cpp
     # # x0 = 5491                   # fails
