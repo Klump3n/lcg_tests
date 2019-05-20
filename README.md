@@ -18,3 +18,6 @@ similar suites for that matter). Do not expect new tests.
 Run ```lcong.py```. For a bit more information about which tests are failing
 and which are succeeding you can use ```lcong.py -l verbose```.
 
+To perform the tests on a sequence of random bits that you have you can run
+```lcong.py -f RANDOM_DATA_FILE [-l verbose]```, where RANDOM_DATA_FILE contains
+your random bits.

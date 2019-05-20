@@ -42,12 +42,12 @@ def gen_params():
     # c = 0
     # m = 9
 
-    # THIS WORKS
-    # x0 was random, a, c correct, m = m - 1 (Knuth, Eq. (38))
-    x0 = 112312219              # random
-    a = 65539
-    c = 0
-    m = 2**31 - 1               # normally 2**31
+    # # THIS WORKS
+    # # x0 was random, a, c correct, m = m - 1 (Knuth, Eq. (38))
+    # x0 = 112312219              # random but odd
+    # a = 65539
+    # c = 0
+    # m = 2**31 - 1               # normally 2**31
 
     # # cpp
     # # x0 = 5491                   # fails
@@ -56,6 +56,34 @@ def gen_params():
     # a = 1103515245
     # c = 12345
 
+    # # unicorn/icon
+    # x0 = 0
+    # a = 1103515245
+    # c = 453816694
+    # # m = 2**31                   # does not work
+    # m = 2**31 - 1               # works
+    # # m = 2**31 - 2               # works
+    # # m = 2**31 - 3               # works
+    # # m = 2**31 - 4               # nope
+
+    # https://www.cse.wustl.edu/~jain/iucee/ftp/k_26rng.pdf p46
+    # "extensively studied and shown to be good"
+    # yep, it works
+    x0 = 1
+    # a = 7**5
+    # a = 48271
+    # a = 69621
+    a = 6303600                 # my own
+    # a = 63036001
+    c = 0
+    m = 2**31 -1
+
+    # shown to be bad
+    # yep, it's bad
+    x0 = 1
+    a = 2**16 + 3
+    c = 0
+    m = 2**31
 
     params = dict()
     params["x0"] = x0 # 1
