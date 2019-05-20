@@ -17,9 +17,12 @@ def parse_from_file(file_name):
         for i in binary_data:
             data += i
 
-    if len(binary_data.shape) == 2:
+    elif len(binary_data.shape) == 2:
         for inner_bin in binary_data:
             for i in inner_bin:
                 data += i
+
+    else:
+        data += "{}".format(binary_data)
 
     return data[:20000]         # length of 20000 is required, tests are adjusted for that.

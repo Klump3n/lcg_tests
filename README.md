@@ -21,3 +21,9 @@ and which are succeeding you can use ```lcong.py -l verbose```.
 To perform the tests on a sequence of random bits that you have you can run
 ```lcong.py -f RANDOM_DATA_FILE [-l verbose]```, where RANDOM_DATA_FILE contains
 your random bits.
+
+Some random data is provided.
+
+rand* are from random.org
+benson_rand is from a quantum random number generator
+dice and dice_rep are from rolling a dice (quite bad random numbers)
