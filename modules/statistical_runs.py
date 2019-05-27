@@ -127,7 +127,10 @@ def runs_passed(binary_sequence):
 
     lengths = range(6, 34)
     with multiprocessing.Pool(4) as p:
-        res = p.starmap(runs_instance, zip(repeat(binary_sequence), lengths))
+        try:
+            res = p.starmap(runs_instance, zip(repeat(binary_sequence), lengths))
+        except KeyboardInterrupt:
+            pass                # QUIET!
 
     for r in res:
         zc6p += r[0]
@@ -161,12 +164,12 @@ def long_runs_instance(binary_sequence, length):
 
     zeros = "0"*length
     if zeros in binary_sequence:
-        cl.verbose_warning("length {} of 0 in binary_sequence".format(length))
+        cl.debug("length {} of 0 in binary_sequence".format(length))
         test_passed = False
 
     ones = "1"*length
     if ones in binary_sequence:
-        cl.verbose_warning("length {} of 1 in binary_sequence".format(length))
+        cl.debug("length {} of 1 in binary_sequence".format(length))
         test_passed = False
 
     return test_passed
@@ -180,7 +183,10 @@ def long_runs_passed(binary_sequence):
 
     lengths = range(34, len(binary_sequence))
     with multiprocessing.Pool(4) as p:
-        res = p.starmap(long_runs_instance, zip(repeat(binary_sequence), lengths))
+        try:
+            res = p.starmap(long_runs_instance, zip(repeat(binary_sequence), lengths))
+        except KeyboardInterrupt:
+            pass                # QUIET!
 
     for r in res:
         if r is False:

@@ -8,6 +8,52 @@ import modules.lcg as lcg
 
 import numpy as np
 
+def parameter_sweep(
+        x0,
+        a_min=1,
+        a_max=2**4-1,
+        c_min=1,
+        c_max=2**4-1,
+        mod_min=2**11-1,
+        mod_max=2**12,
+):
+    """
+    Generate a list of parameters.
+
+    Since we would like to have 20000 bits in a sequence, we need a modulus big
+    enough to not repeat in those 20000 digits.
+
+    That should be from roughly 2^11 onwards, since 2^11 needs 11 bits per
+    number, and 2^11 = 2048.
+    11*2^11 = 22528 bits
+
+    """
+    output_list = list()
+
+    for mod in range(mod_min, mod_max+1):
+        for c in range(c_min, c_max+1):
+            if (c > mod - 1):
+                break
+            for a in range(a_min, a_max+1):
+                if (a > mod - 1):
+                    break
+                param = dict()
+                param["x0"] = int(x0)
+                param["a"] = int(a)
+                param["c"] = int(c)
+                param["m"] = int(mod)
+                output_list.append(param)
+
+    cl.info("Created {} parameters".format(len(output_list)))
+    cl.info("At one second per check this will take about {} seconds (or "
+            "{:.2f} minutes; or {:.2f} hours)".format(
+                len(output_list),
+                len(output_list)/60,
+                len(output_list)/3600)
+    )
+
+    return output_list
+
 def gen_params():
     """
     Generate a set of parameters for the LCG.
@@ -49,22 +95,6 @@ def gen_params():
     # c = 0
     # m = 2**31 - 1               # normally 2**31
 
-    # # cpp
-    # # x0 = 5491                   # fails
-    # x0 = 549                   # works
-    # m = 2**31
-    # a = 1103515245
-    # c = 12345
-
-    # # unicorn/icon
-    # x0 = 0
-    # a = 1103515245
-    # c = 453816694
-    # # m = 2**31                   # does not work
-    # m = 2**31 - 1               # works
-    # # m = 2**31 - 2               # works
-    # # m = 2**31 - 3               # works
-    # # m = 2**31 - 4               # nope
 
     # https://www.cse.wustl.edu/~jain/iucee/ftp/k_26rng.pdf p46
     # "extensively studied and shown to be good"
@@ -170,7 +200,10 @@ def gen_binary_nums(nums, modulus=None):
         while 2**n < modulus:
             n += 1
 
-        padding = len("{:b}".format(2**(n-1)))
+        if n > 0:
+            padding = len("{:b}".format(2**(n-1)))
+        else:
+            padding = 1
         cl.verbose("Padding numbers to {} digits".format(padding))
 
     for num in nums:
