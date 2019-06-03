@@ -116,12 +116,13 @@ def main():
     # if we have a random data file present we can parse that
     if args.input:
         binary_sequence = parse_file.parse_from_file(args.input)
-        cl.info("Testing random numbers from file {}".format(args.file))
+        cl.info("Testing random numbers from file {}".format(args.input))
     else:
         cl.info("Starting LCG testing")
 
     cl.verbose("Using {} processes in parallel (in (long) runs test)".format(
         args.j))
+
     # run the tests for the LCG (or the random data provided)
     run_tests.run_tests(args, binary_sequence)
 
