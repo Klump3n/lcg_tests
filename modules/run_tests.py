@@ -72,13 +72,22 @@ def run_tests(args, numbers_from_file=None):
 
             results = h5file["results_a_c_m"]
 
+            calculation_counter = 0
+            max_calculations = len(param_list)
+
             for parameters in param_list:
                 nums = gpn.gen_nums(parameters)
 
                 bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
                 binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
-                sequence_res = sequence_test(args, binary_sequence, parameters)
+                calculation_counter += 1
+
+                sequence_res = sequence_test(
+                    args, binary_sequence,
+                    calculation_counter, max_calculations,
+                    parameters
+                )
 
                 res_dict = dict()
                 res_dict["params"] = parameters
@@ -111,7 +120,7 @@ def run_tests(args, numbers_from_file=None):
                     cl.verbose("Writing results to output file")
 
 
-def sequence_test(args, binary_sequence, parameters=None):
+def sequence_test(args, binary_sequence, calc_count, max_count, parameters=None):
     """
     Run a test on a binary sequence.
 
@@ -156,10 +165,12 @@ def sequence_test(args, binary_sequence, parameters=None):
         source = "random data from file"
 
     if np.all(general_results):
-        cl.info("\u001b[32;1m({}/{} passed) General statistical tests passed "
-                "for {}\u001b[0m".format(count, len(general_results), source))
+        cl.info("[{} of {}]: \u001b[32;1m({}/{} tests passed) General "
+                "statistical tests passed for {}\u001b[0m".format(
+                    calc_count, max_count, count, len(general_results), source))
     else:
-        cl.info("\u001b[31;1m({}/{} passed) General statistical tests failed "
-                "for {}\u001b[0m".format(count, len(general_results), source))
+        cl.info("[{} of {}]: \u001b[31;1m({}/{} tests passed) General "
+                "statistical tests failed for {}\u001b[0m".format(
+                    calc_count, max_count, count, len(general_results), source))
 
     return general_results_dict
