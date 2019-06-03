@@ -92,9 +92,21 @@ def run_tests(args, numbers_from_file=None):
                     cl.debug("Creating new dictionary")
                 else:
                     try:
-                        if isinstance(res_dict[x0][a][c][m], dict):
-                            cl.verbose("Datapoint {} exists, skipping".format(parameters))
+                        if (
+                                isinstance(res_dict[x0][a][c][m], dict)
+                                and
+                                not args.force
+                        ):
+                            cl.verbose("Datapoint {} exists, skipping".format(
+                                parameters))
                             continue
+                        if (
+                                isinstance(res_dict[x0][a][c][m], dict)
+                                and
+                                args.force
+                        ):
+                            cl.verbose("Datapoint {} exists, forcing "
+                                       "recalculation".format(parameters))
                     except KeyError:
                         pass
 

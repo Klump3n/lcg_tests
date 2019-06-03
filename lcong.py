@@ -46,9 +46,7 @@ def parse_arguments():
                                  "warning", "error", "critical"],
                         default="info")
 
-    parser.add_argument("-f", "--file", help="perform tests on file")
-
-    params_required = "-f" not in sys.argv and not "--file" in sys.argv
+    parser.add_argument("-i", "--input", help="perform tests on input file")
 
     parser.add_argument("-x", type=int, help="initial x in (a*x + c) mod m",
                         default=1)
@@ -61,22 +59,8 @@ def parse_arguments():
                         "scan of m in (a*x + c) mod m, should "
                         "be bigger than 2^11", nargs="+")
 
-    # a_group = parser.add_mutually_exclusive_group(required=params_required)
-    # a_group.add_argument("-a", type=str, help="a in (a*x + c) mod m")
-    # a_group.add_argument("--a_minmax", type=str, help="interval for parameter "
-    #                      "scan of a in (a*x + c) mod m", nargs=2)
-
-    # c_group = parser.add_mutually_exclusive_group(required=params_required)
-    # c_group.add_argument("-c", type=str, help="c in (a*x + c) mod m")
-    # c_group.add_argument("--c_minmax", type=str, help="interval for parameter "
-    #                      "scan of c in (a*x + c) mod m", nargs=2)
-
-    # m_group = parser.add_mutually_exclusive_group(required=params_required)
-    # m_group.add_argument("-m", type=str, help="a in (a*x + c) mod m, should "
-    #                      "be bigger than 2^11")
-    # m_group.add_argument("--m_minmax", type=str, help="interval for parameter "
-    #                      "scan of m in (a*x + c) mod m", nargs=2)
-
+    parser.add_argument("-f", "--force", help="force recalculation",
+                        action="store_true")
     parser.add_argument("-j", help="number of parallel processes in runs test",
                         type=int, default=4)
     parser.add_argument("-t", "--test", help="perform unittests and exit",
@@ -130,8 +114,8 @@ def main():
     binary_sequence = None      # instantiate to None
 
     # if we have a random data file present we can parse that
-    if args.file:
-        binary_sequence = parse_file.parse_from_file(args.file)
+    if args.input:
+        binary_sequence = parse_file.parse_from_file(args.input)
         cl.info("Testing random numbers from file {}".format(args.file))
     else:
         cl.info("Starting LCG testing")
