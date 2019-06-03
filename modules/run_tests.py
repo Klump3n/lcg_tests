@@ -23,7 +23,7 @@ def run_tests(args, numbers_from_file=None):
     """
     if numbers_from_file:
         binary_sequence = numbers_from_file
-        sequence_test(binary_sequence)
+        sequence_test(args, binary_sequence)
 
     else:
         x0 = args.x
@@ -120,7 +120,7 @@ def run_tests(args, numbers_from_file=None):
                     cl.verbose("Writing results to output file")
 
 
-def sequence_test(args, binary_sequence, calc_count, max_count, parameters=None):
+def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=None):
     """
     Run a test on a binary sequence.
 

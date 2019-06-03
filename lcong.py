@@ -45,22 +45,25 @@ def parse_arguments():
                         choices=["quiet", "debug", "verbose", "info",
                                  "warning", "error", "critical"],
                         default="info")
+
     parser.add_argument("-f", "--file", help="perform tests on file")
+
+    params_required = "-f" not in sys.argv and not "--file" in sys.argv
 
     parser.add_argument("-x", type=int, help="initial x in (a*x + c) mod m",
                         default=1)
 
-    a_group = parser.add_mutually_exclusive_group(required=True)
+    a_group = parser.add_mutually_exclusive_group(required=params_required)
     a_group.add_argument("-a", type=str, help="a in (a*x + c) mod m")
     a_group.add_argument("--a_minmax", type=str, help="interval for parameter "
                          "scan of a in (a*x + c) mod m", nargs=2)
 
-    c_group = parser.add_mutually_exclusive_group(required=True)
+    c_group = parser.add_mutually_exclusive_group(required=params_required)
     c_group.add_argument("-c", type=str, help="c in (a*x + c) mod m")
     c_group.add_argument("--c_minmax", type=str, help="interval for parameter "
                          "scan of c in (a*x + c) mod m", nargs=2)
 
-    m_group = parser.add_mutually_exclusive_group(required=True)
+    m_group = parser.add_mutually_exclusive_group(required=params_required)
     m_group.add_argument("-m", type=str, help="a in (a*x + c) mod m, should "
                          "be bigger than 2^11")
     m_group.add_argument("--m_minmax", type=str, help="interval for parameter "
@@ -79,7 +82,6 @@ def perform_unittests():
     Start unittest for the program.
     """
     tests = unittest.TestLoader().discover('.')
-    # unittest.runner.TextTestRunner(verbosity=2, buffer=False).run(tests)
     unittest.runner.TextTestRunner(verbosity=2, buffer=True).run(tests)
 
     sys.exit("--- Performed unittests, exiting ---")
