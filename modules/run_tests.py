@@ -76,6 +76,37 @@ def run_tests(args, numbers_from_file=None):
             max_calculations = len(param_list)
 
             for parameters in param_list:
+
+                a = parameters["a"]
+                c = parameters["c"]
+                m = parameters["m"]
+
+                try:
+                    old = results[a, c, m]
+                    if not old == "":
+                        calculation_counter += 1
+                        cl.verbose("Datapoint for parameters {} exits, doing "
+                                   "nothing".format(parameters))
+                        continue
+                except json.decoder.JSONDecodeError as e:
+                    cl.debug("Exception when trying to parse json for "
+                             "parameter {} from file: {}".format(parameters, e))
+
+                # increase size of file if the datapoint can not be accessed
+                except ValueError:
+                    nasize, ncsize, nmsize = results.shape
+                    if a >= nasize:
+                        nasize = a + 1
+                    if c >= ncsize:
+                        ncsize = c + 1
+                    if m >= nmsize:
+                        nmsize = m + 1
+
+                    results.shape = (nasize, ncsize, nmsize)
+                    cl.debug("Increasing storage size of results file "
+                             "to {}".format(results.shape))
+
+                # perform the actual calculation
                 nums = gpn.gen_nums(parameters)
 
                 bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
@@ -94,30 +125,10 @@ def run_tests(args, numbers_from_file=None):
                 res_dict["results"] = sequence_res
                 result = json.dumps(res_dict)
 
-                a = parameters["a"]
-                c = parameters["c"]
-                m = parameters["m"]
-
                 # write to file
-                try:
-                    results[a, c, m] = result
-                    cl.verbose("Writing results to output file")
+                results[a, c, m] = result
+                cl.verbose("Writing results to output file")
 
-                # increase size of file
-                except ValueError:
-                    nasize, ncsize, nmsize = results.shape
-                    if a >= nasize:
-                        nasize = a + 1
-                    if c >= ncsize:
-                        ncsize = c + 1
-                    if m >= nmsize:
-                        nmsize = m + 1
-
-                    results.shape = (nasize, ncsize, nmsize)
-                    cl.debug("Increasing storage size of results file "
-                             "to {}".format(results.shape))
-                    results[a, c, m] = result
-                    cl.verbose("Writing results to output file")
 
 
 def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=None):
