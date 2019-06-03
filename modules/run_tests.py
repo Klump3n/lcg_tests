@@ -103,6 +103,7 @@ def run_tests(args, numbers_from_file=None):
                         ):
                             cl.verbose("Datapoint {} exists, skipping".format(
                                 parameters))
+                            calculation_counter += 1
                             continue
                         if (
                                 isinstance(res_dict[x0][a][c][m], dict)
