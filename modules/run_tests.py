@@ -54,7 +54,8 @@ def run_tests(args, numbers_from_file=None):
         else:
             cl.error("Can't parse m")
 
-        param_list = gpn.parameter_sweep(x0, amin, amax, cmin, cmax, mmin, mmax)
+        if args.force:
+            cl.info("Forcing recalculation for every parameter")
 
         # open file to save results in
         results_dir = pathlib.Path(__file__).parent.parent / "results"
@@ -71,9 +72,12 @@ def run_tests(args, numbers_from_file=None):
 
         cl.verbose("Using results file {}".format(res_file))
 
+        param_list = gpn.parameter_sweep(x0, amin, amax, cmin, cmax, mmin, mmax)
+
         calculation_counter = 0
         max_calculations = len(param_list)
 
+        # calculations
         for parameters in param_list:
 
             x0 = parameters["x0"]
