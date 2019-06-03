@@ -12,9 +12,8 @@ import modules.statistical_runs as runs
 import modules.statistical_autocorrelation as ac
 
 import numpy as np
-import h5py
+import pickle
 import pathlib
-import json
 
 def run_tests(args, numbers_from_file=None):
     """
@@ -58,83 +57,87 @@ def run_tests(args, numbers_from_file=None):
         param_list = gpn.parameter_sweep(x0, amin, amax, cmin, cmax, mmin, mmax)
 
         # open file to save results in
-        res_file = pathlib.Path(__file__).parent.parent / "results_file.h5"
+        results_dir = pathlib.Path(__file__).parent.parent / "results"
+
+        if not results_dir.is_dir():
+            results_dir.mkdir()
+
+        filename = "results_x0_{}_a_{}_{}_c_{}_{}_m_{}_{}.pickle".format(
+            x0, amin, amax, cmin, cmax, mmin, mmax)
+        res_file = results_dir / filename
 
         if not res_file.exists():
-            cl.verbose("Creating results file {}".format(res_file))
-            asize, csize, msize = (1024, 1024, 1024)
+            res_file.touch()
 
-            pathlib.Path(res_file).touch()
+        cl.verbose("Using results file {}".format(res_file))
 
-            with h5py.File(res_file, "r+") as h5file:
-                dt = h5py.special_dtype(vlen=str)  # string
-                # resizeable h5 dataset
-                h5file.create_dataset("results_a_c_m", (asize, csize, msize),
-                                      maxshape=(None, None, None), dtype=dt)
+        calculation_counter = 0
+        max_calculations = len(param_list)
 
-        with h5py.File(res_file, "r+") as h5file:
+        for parameters in param_list:
 
-            cl.verbose("Using results file {}".format(res_file))
+            x0 = parameters["x0"]
+            a = parameters["a"]
+            c = parameters["c"]
+            m = parameters["m"]
 
-            results = h5file["results_a_c_m"]
-
-            calculation_counter = 0
-            max_calculations = len(param_list)
-
-            for parameters in param_list:
-
-                a = parameters["a"]
-                c = parameters["c"]
-                m = parameters["m"]
+            with open(res_file, "rb") as output_file:
+                cl.verbose("Reading results from output file")
 
                 try:
-                    old = results[a, c, m]
-                    if not old == "":
-                        calculation_counter += 1
-                        cl.verbose("Datapoint for parameters {} exits, doing "
-                                   "nothing".format(parameters))
-                        continue
-                except json.decoder.JSONDecodeError as e:
-                    cl.debug("Exception when trying to parse json for "
-                             "parameter {} from file: {}".format(parameters, e))
+                    res_dict = pickle.load(output_file)
+                    cl.debug("Loading existing dictionary")
+                except EOFError:
+                    res_dict = dict()
+                    cl.debug("Creating new dictionary")
+                else:
+                    try:
+                        if isinstance(res_dict[x0][a][c][m], dict):
+                            cl.verbose("Datapoint {} exists, skipping".format(parameters))
+                            continue
+                    except KeyError:
+                        pass
 
-                # increase size of file if the datapoint can not be accessed
-                except ValueError:
-                    nasize, ncsize, nmsize = results.shape
-                    if a >= nasize:
-                        nasize = a + 1
-                    if c >= ncsize:
-                        ncsize = c + 1
-                    if m >= nmsize:
-                        nmsize = m + 1
+            # create the dictionary step by step
+            try:
+                res = res_dict[x0]
+            except KeyError:
+                res_dict[x0] = dict()
 
-                    results.shape = (nasize, ncsize, nmsize)
-                    cl.debug("Increasing storage size of results file "
-                             "to {}".format(results.shape))
+            try:
+                res = res_dict[x0][a]
+            except KeyError:
+                res_dict[x0][a] = dict()
 
-                # perform the actual calculation
-                nums = gpn.gen_nums(parameters)
+            try:
+                res = res_dict[x0][a][c]
+            except KeyError:
+                res_dict[x0][a][c] = dict()
 
-                bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
-                binary_sequence = gpn.gen_binary_sequence(bin_nums)
+            try:
+                res = res_dict[x0][a][c][m]
+            except KeyError:
+                res_dict[x0][a][c][m] = dict()
 
-                calculation_counter += 1
 
-                sequence_res = sequence_test(
-                    args, binary_sequence,
-                    calculation_counter, max_calculations,
-                    parameters
-                )
+            # perform the actual calculation
+            nums = gpn.gen_nums(parameters)
 
-                res_dict = dict()
-                res_dict["params"] = parameters
-                res_dict["results"] = sequence_res
-                result = json.dumps(res_dict)
+            bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
+            binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
-                # write to file
-                results[a, c, m] = result
+            calculation_counter += 1
+
+            sequence_res = sequence_test(
+                args, binary_sequence,
+                calculation_counter, max_calculations,
+                parameters
+            )
+
+            res_dict[x0][a][c][m] = sequence_res
+            with open(res_file, "wb") as output_file:
                 cl.verbose("Writing results to output file")
-
+                pickle.dump(res_dict, output_file)
 
 
 def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=None):
