@@ -55,7 +55,7 @@ def run_tests(args, numbers_from_file=None):
         res_file = pathlib.Path(__file__).parent.parent / "results_file.h5"
 
         if not res_file.exists():
-
+            cl.verbose("Creating results file {}".format(res_file))
             asize, csize, msize = (1024, 1024, 1024)
 
             pathlib.Path(res_file).touch()
@@ -67,6 +67,8 @@ def run_tests(args, numbers_from_file=None):
                                       maxshape=(None, None, None), dtype=dt)
 
         with h5py.File(res_file, "r+") as h5file:
+
+            cl.verbose("Using results file {}".format(res_file))
 
             results = h5file["results_a_c_m"]
 
@@ -90,6 +92,7 @@ def run_tests(args, numbers_from_file=None):
                 # write to file
                 try:
                     results[a, c, m] = result
+                    cl.verbose("Writing results to output file")
 
                 # increase size of file
                 except ValueError:
@@ -102,7 +105,10 @@ def run_tests(args, numbers_from_file=None):
                         nmsize = m + 1
 
                     results.shape = (nasize, ncsize, nmsize)
+                    cl.debug("Increasing storage size of results file "
+                             "to {}".format(results.shape))
                     results[a, c, m] = result
+                    cl.verbose("Writing results to output file")
 
 
 def sequence_test(binary_sequence, parameters=None):
