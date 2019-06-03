@@ -53,21 +53,29 @@ def parse_arguments():
     parser.add_argument("-x", type=int, help="initial x in (a*x + c) mod m",
                         default=1)
 
-    a_group = parser.add_mutually_exclusive_group(required=params_required)
-    a_group.add_argument("-a", type=str, help="a in (a*x + c) mod m")
-    a_group.add_argument("--a_minmax", type=str, help="interval for parameter "
-                         "scan of a in (a*x + c) mod m", nargs=2)
+    parser.add_argument("-a", type=str, help="interval for parameter "
+                        "scan of a in (a*x + c) mod m", nargs="+")
+    parser.add_argument("-c", type=str, help="interval for parameter "
+                        "scan of c in (a*x + c) mod m", nargs="+")
+    parser.add_argument("-m", type=str, help="interval for parameter "
+                        "scan of m in (a*x + c) mod m, should "
+                        "be bigger than 2^11", nargs="+")
 
-    c_group = parser.add_mutually_exclusive_group(required=params_required)
-    c_group.add_argument("-c", type=str, help="c in (a*x + c) mod m")
-    c_group.add_argument("--c_minmax", type=str, help="interval for parameter "
-                         "scan of c in (a*x + c) mod m", nargs=2)
+    # a_group = parser.add_mutually_exclusive_group(required=params_required)
+    # a_group.add_argument("-a", type=str, help="a in (a*x + c) mod m")
+    # a_group.add_argument("--a_minmax", type=str, help="interval for parameter "
+    #                      "scan of a in (a*x + c) mod m", nargs=2)
 
-    m_group = parser.add_mutually_exclusive_group(required=params_required)
-    m_group.add_argument("-m", type=str, help="a in (a*x + c) mod m, should "
-                         "be bigger than 2^11")
-    m_group.add_argument("--m_minmax", type=str, help="interval for parameter "
-                         "scan of m in (a*x + c) mod m", nargs=2)
+    # c_group = parser.add_mutually_exclusive_group(required=params_required)
+    # c_group.add_argument("-c", type=str, help="c in (a*x + c) mod m")
+    # c_group.add_argument("--c_minmax", type=str, help="interval for parameter "
+    #                      "scan of c in (a*x + c) mod m", nargs=2)
+
+    # m_group = parser.add_mutually_exclusive_group(required=params_required)
+    # m_group.add_argument("-m", type=str, help="a in (a*x + c) mod m, should "
+    #                      "be bigger than 2^11")
+    # m_group.add_argument("--m_minmax", type=str, help="interval for parameter "
+    #                      "scan of m in (a*x + c) mod m", nargs=2)
 
     parser.add_argument("-j", help="number of parallel processes in runs test",
                         type=int, default=4)

@@ -28,26 +28,32 @@ def run_tests(args, numbers_from_file=None):
     else:
         x0 = args.x
 
-        if args.a is not None:
-            amin = eval(args.a)
-            amax = eval(args.a)
+        if len(args.a) == 1:
+            amin = eval(args.a[0])
+            amax = eval(args.a[0])
+        elif len(args.a) == 2:
+            amin = min(eval(args.a[0]), eval(args.a[1]))
+            amax = max(eval(args.a[0]), eval(args.a[1]))
         else:
-            amin = min(eval(args.a_minmax[0]), eval(args.a_minmax[1]))
-            amax = max(eval(args.a_minmax[0]), eval(args.a_minmax[1]))
+            cl.error("Can't parse a")
 
-        if args.c is not None:
-            cmin = eval(args.c)
-            cmax = eval(args.c)
+        if len(args.c) == 1:
+            cmin = eval(args.c[0])
+            cmax = eval(args.c[0])
+        elif len(args.c) == 2:
+            cmin = min(eval(args.c[0]), eval(args.c[1]))
+            cmax = max(eval(args.c[0]), eval(args.c[1]))
         else:
-            cmin = min(eval(args.c_minmax[0]), eval(args.c_minmax[1]))
-            cmax = max(eval(args.c_minmax[0]), eval(args.c_minmax[1]))
+            cl.error("Can't parse c")
 
-        if args.m is not None:
-            mmin = eval(args.m)
-            mmax = eval(args.m)
+        if len(args.m) == 1:
+            mmin = eval(args.m[0])
+            mmax = eval(args.m[0])
+        elif len(args.m) == 2:
+            mmin = min(eval(args.m[0]), eval(args.m[1]))
+            mmax = max(eval(args.m[0]), eval(args.m[1]))
         else:
-            mmin = min(eval(args.m_minmax[0]), eval(args.m_minmax[1]))
-            mmax = max(eval(args.m_minmax[0]), eval(args.m_minmax[1]))
+            cl.error("Can't parse m")
 
         param_list = gpn.parameter_sweep(x0, amin, amax, cmin, cmax, mmin, mmax)
 
