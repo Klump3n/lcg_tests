@@ -66,6 +66,8 @@ def parse_arguments():
     m_group.add_argument("--m_minmax", type=str, help="interval for parameter "
                          "scan of m in (a*x + c) mod m", nargs=2)
 
+    parser.add_argument("-j", help="number of parallel processes in runs test",
+                        type=int, default=4)
     parser.add_argument("-t", "--test", help="perform unittests and exit",
                         action="store_true")
 
@@ -124,6 +126,8 @@ def main():
     else:
         cl.info("Starting LCG testing")
 
+    cl.verbose("Using {} processes in parallel (in (long) runs test)".format(
+        args.j))
     # run the tests for the LCG (or the random data provided)
     run_tests.run_tests(args, binary_sequence)
 

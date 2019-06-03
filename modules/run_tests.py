@@ -78,7 +78,7 @@ def run_tests(args, numbers_from_file=None):
                 bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
                 binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
-                sequence_res = sequence_test(binary_sequence, parameters)
+                sequence_res = sequence_test(args, binary_sequence, parameters)
 
                 res_dict = dict()
                 res_dict["params"] = parameters
@@ -111,27 +111,40 @@ def run_tests(args, numbers_from_file=None):
                     cl.verbose("Writing results to output file")
 
 
-def sequence_test(binary_sequence, parameters=None):
+def sequence_test(args, binary_sequence, parameters=None):
     """
     Run a test on a binary sequence.
 
     """
+    num_proc = args.j
+
     general_results = list()
+    general_results_dict = dict()
 
     cl.verbose("Performing MONOBIT test")
-    general_results.append(monobit.monobit_passed(binary_sequence))
+    monobit_result = monobit.monobit_passed(binary_sequence)
+    general_results.append(monobit_result)
+    general_results_dict["monobit"] = monobit_result
 
     cl.verbose("Performing POKER test")
-    general_results.append(poker.poker_passed(binary_sequence))
+    poker_result = poker.poker_passed(binary_sequence)
+    general_results.append(poker_result)
+    general_results_dict["poker"] = poker_result
 
     cl.verbose("Performing RUNS test")
-    general_results.append(runs.runs_passed(binary_sequence))
+    runs_result = runs.runs_passed(binary_sequence, parallel=num_proc)
+    general_results.append(runs_result)
+    general_results_dict["runs"] = runs_result
 
     cl.verbose("Performing LONG RUNS test")
-    general_results.append(runs.long_runs_passed(binary_sequence))
+    long_runs_result = runs.long_runs_passed(binary_sequence, parallel=num_proc)
+    general_results.append(long_runs_result)
+    general_results_dict["long_runs"] = long_runs_result
 
     cl.verbose("Performing AUTOCORRELATION test")
-    general_results.append(ac.autocorrelation_passed(binary_sequence))
+    autocorrelation_result = ac.autocorrelation_passed(binary_sequence)
+    general_results.append(autocorrelation_result)
+    general_results_dict["autocorrelation"] = autocorrelation_result
 
     count = 0
     for res in general_results:
@@ -149,4 +162,4 @@ def sequence_test(binary_sequence, parameters=None):
         cl.info("\u001b[31;1m({}/{} passed) General statistical tests failed "
                 "for {}\u001b[0m".format(count, len(general_results), source))
 
-    return general_results
+    return general_results_dict

@@ -41,7 +41,7 @@ def runs_instance(binary_sequence, length=1):
 
     return zero_count, one_count
 
-def runs_passed(binary_sequence):
+def runs_passed(binary_sequence, parallel=4):
     """
     Perform a runs test.
 
@@ -126,7 +126,7 @@ def runs_passed(binary_sequence):
     oc6p = 0
 
     lengths = range(6, 34)
-    with multiprocessing.Pool(4) as p:
+    with multiprocessing.Pool(parallel) as p:
         try:
             res = p.starmap(runs_instance, zip(repeat(binary_sequence), lengths))
         except KeyboardInterrupt:
@@ -174,7 +174,7 @@ def long_runs_instance(binary_sequence, length):
 
     return test_passed
 
-def long_runs_passed(binary_sequence):
+def long_runs_passed(binary_sequence, parallel=4):
     """
     Perform a runs test with length 34 or more.
 
@@ -182,7 +182,7 @@ def long_runs_passed(binary_sequence):
     test_passed = True
 
     lengths = range(34, len(binary_sequence))
-    with multiprocessing.Pool(4) as p:
+    with multiprocessing.Pool(parallel) as p:
         try:
             res = p.starmap(long_runs_instance, zip(repeat(binary_sequence), lengths))
         except KeyboardInterrupt:
