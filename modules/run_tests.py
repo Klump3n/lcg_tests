@@ -85,7 +85,7 @@ def run_tests(args, numbers_from_file=None):
             c = parameters["c"]
             m = parameters["m"]
 
-            with open(res_file, "rb") as output_file:
+            with open(str(res_file), "rb") as output_file:
                 cl.debug("Reading results from output file")
 
                 try:
@@ -151,7 +151,7 @@ def run_tests(args, numbers_from_file=None):
             )
 
             res_dict[x0][a][c][m] = sequence_res
-            with open(res_file, "wb") as output_file:
+            with open(str(res_file), "wb") as output_file:
                 cl.debug("Writing results to output file")
                 pickle.dump(res_dict, output_file)
 
