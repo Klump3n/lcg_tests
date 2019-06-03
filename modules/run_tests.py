@@ -51,70 +51,6 @@ def run_tests(args, numbers_from_file=None):
 
         param_list = gpn.parameter_sweep(x0, amin, amax, cmin, cmax, mmin, mmax)
 
-
-
-
-
-
-    # filename = "thisfile.h5"
-
-    # if pathlib.Path(filename).exists():
-    #     pathlib.Path(filename).unlink()
-    #     pathlib.Path(filename).touch()
-
-    # asize = 20
-    # csize = 20
-    # msize = 20
-
-    # with h5py.File(filename, "r+") as h5file:
-    #     dt = h5py.special_dtype(vlen=str)     # PY3
-    #     h5file.create_dataset("success_rates_json", (asize, csize, msize), maxshape=(None, None, None), dtype=dt)  # resizeable
-
-    # # some profiling
-    # # open once and write all
-    # start = time.time()
-
-    # with h5py.File(filename, "r+") as h5file:
-    #     dset_json = h5file["success_rates_json"]
-    #     for a in np.arange(0, 2*asize, 3):
-    #     # for a in range(asize):
-    #         for c in np.arange(0, 2*csize, 3):
-    #         # for c in range(csize):
-    #             for m in np.arange(0, 2*msize, 3):
-    #             # for m in range(msize):
-
-    #                 try:
-    #                     write = dict()
-    #                     write["res1"] = random.random()
-    #                     write["res2"] = random.random()
-    #                     write["res3"] = random.random()
-    #                     write["res4"] = random.random()
-    #                     write["res5"] = random.random()
-    #                     json_write = json.dumps(write)
-    #                     dset_json[a, c, m] = json_write
-
-    #                 except ValueError:
-    #                     nasize, ncsize, nmsize = dset_json.shape
-    #                     if a >= nasize:
-    #                         nasize = a + 1
-    #                     if c >= ncsize:
-    #                         ncsize = c + 1
-    #                     if m >= nmsize:
-    #                         nmsize = m + 1
-    #                     dset_json.shape = (nasize, ncsize, nmsize)
-    #                     print("Reshape to {}".format(dset_json.shape))
-    #                     dset_json[a, c, m] = json_write
-
-    # print("Opening once and writing entries took {:.2f} seconds".format(time.time() - start))
-
-
-
-
-
-
-
-
-
         # open file to save results in
         res_file = pathlib.Path(__file__).parent.parent / "results_file.h5"
 
@@ -126,8 +62,9 @@ def run_tests(args, numbers_from_file=None):
 
             with h5py.File(res_file, "r+") as h5file:
                 dt = h5py.special_dtype(vlen=str)  # string
-                h5file.create_dataset("results_a_c_m", (asize, csize, msize), maxshape=(None, None, None), dtype=dt)  # resizeable
-
+                # resizeable h5 dataset
+                h5file.create_dataset("results_a_c_m", (asize, csize, msize),
+                                      maxshape=(None, None, None), dtype=dt)
 
         with h5py.File(res_file, "r+") as h5file:
 
