@@ -7,8 +7,6 @@ http://csrc.nist.gov/publications/fips/fips1401.htm
 """
 from util.logging.logger import CoreLog as cl
 
-# import numpy as np
-
 def monobit_passed(binary_sequence):
     """
     Test the binary sequence for occurences of 0 and 1.
@@ -17,7 +15,6 @@ def monobit_passed(binary_sequence):
 
     """
     bin_len = len(binary_sequence)
-    # bin_sum = sum(np.asarray(list(binary_sequence), dtype=int))
     bin_sum = sum([int(i) for i in binary_sequence])
 
     ratio = bin_sum/bin_len
