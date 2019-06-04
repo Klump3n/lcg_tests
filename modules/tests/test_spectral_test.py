@@ -48,7 +48,7 @@ class Test_GenParametersAndNumbers(unittest.TestCase):
         params["c"] = 1
         params["m"] = 10**10
 
-        spectral = st.SpectralTest(params)
+        spectral = st.SpectralTest(params, T=5)
         # spectral.visualize()
 
 if __name__ == "__main__":
