@@ -108,3 +108,4 @@ venv.bak/
 
 electricNoise.txt
 results_file.h5
+*.pickle
