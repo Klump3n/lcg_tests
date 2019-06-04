@@ -17,12 +17,15 @@ class SpectralTest:
     We follow D. Knuth, pp.98
 
     """
-    def __init__(self, parameters):
+    def __init__(self, parameters, T=3):
         """
         Generate random numbers and so on.
 
         """
         cl.debug("Calling spectral_test with parameters {}".format(parameters))
+
+        self._T = T
+
         self.par_x0 = parameters["x0"]
         self.par_a = parameters["a"]
         self.par_c = parameters["c"]
@@ -39,6 +42,9 @@ class SpectralTest:
 
         """
         cl.debug("Step 1 (Initialization)")
+
+        self._t = 2
+
         self._h = self.par_a
         self._hprime = self.par_m
         self._p = 1
@@ -130,6 +136,14 @@ class SpectralTest:
             [ +1*self._pprime , +1*self._hprime ],
             [ -1*self._p      , -1*self._h      ]
         ])
+
+    def _step_4(self):
+        """
+        Step 4.
+
+        """
+        self._t += 1
+
 
     def visualize(self):
         """
