@@ -30,13 +30,26 @@ class Test_GenParametersAndNumbers(unittest.TestCase):
         """
         print()
         params = dict()
+
+        # params["x0"] = 0
+        # params["a"] = 7**5
+        # params["c"] = 2**8 - 15
+        # params["m"] = 2**16 - 1
+
+        # # good basic test
+        # params["x0"] = 1
+        # params["a"] = 1103515245
+        # params["c"] = 453816694
+        # params["m"] = 2**32 - 1
+
+        # good basic test
         params["x0"] = 0
-        params["a"] = 7**5
-        params["c"] = 2**8 - 15
-        params["m"] = 2**8 - 1
+        params["a"] = 3141592621
+        params["c"] = 1
+        params["m"] = 10**10
 
         spectral = st.SpectralTest(params)
-        spectral.visualize()
+        # spectral.visualize()
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
