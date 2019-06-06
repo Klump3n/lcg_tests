@@ -5,9 +5,6 @@ Performs the spectral test.
 """
 import sys
 import numpy as np
-from matplotlib import pyplot as plt
-
-import modules.gen_parameters_and_numbers as gpn
 
 from util.logging.logger import CoreLog as cl
 
@@ -303,7 +300,6 @@ class SpectralTest:
             value = self._Y[0, :].T @ self._Y[0, :]
             self._s = np.min([self._s, value])
             self._step_11()
-
 
     def _step_11(self):
         """
