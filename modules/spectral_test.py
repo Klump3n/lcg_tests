@@ -21,11 +21,14 @@ class SpectralTest:
 
         """
         cl.debug("Calling spectral_test with parameters {}".format(parameters))
-
-        cl.debug("Recursion limit is set to {}".format(sys.getrecursionlimit()))
+        old_recursion_limit = sys.getrecursionlimit()
+        cl.debug("Recursion limit is set to {}".format(old_recursion_limit))
         new_recursion_limit = 10000
-        cl.debug("Setting recursion limit to {}".format(new_recursion_limit))
-        sys.setrecursionlimit(new_recursion_limit)
+        if old_recursion_limit < new_recursion_limit:
+            cl.debug("Setting recursion limit to {}".format(new_recursion_limit))
+            sys.setrecursionlimit(new_recursion_limit)
+        else:
+            cl.debug("Recursion limit is sufficient")
 
         self._T = T
 
@@ -340,5 +343,5 @@ class SpectralTest:
         else:
             vt = np.sqrt(self._s)
             verdict = "\u001b[32;1mpassed\u001b[0m" if vt > 2**(30/self._t) else "\u001b[31;1mfailed\u001b[0m"
-            cl.verbose("Test for {} dimensions passed when v{} = {:.2f} > {}, so it {}".format(self._t, self._t, vt, 2**15, verdict))
+            cl.verbose("Test for {} dimensions passed when v{} = {:.2f} > {:.2f}, so it {}".format(self._t, self._t, vt, 2**(30/self._t), verdict))
             self.results[self._t] = np.sqrt(self._s)
