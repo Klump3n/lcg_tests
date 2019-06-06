@@ -10,6 +10,7 @@ import modules.statistical_monobit as monobit
 import modules.statistical_poker as poker
 import modules.statistical_runs as runs
 import modules.statistical_autocorrelation as ac
+import modules.spectral_test as st
 
 import numpy as np
 import pickle
@@ -201,13 +202,29 @@ def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=N
     else:
         source = "random data from file"
 
+    # generate info strings
     if np.all(general_results):
-        cl.info("[{} of {}]: \u001b[32;1m({}/{} tests passed) General "
-                "statistical tests passed for {}\u001b[0m".format(
-                    calc_count, max_count, count, len(general_results), source))
+        stat_result = ("[{} of {}]: \u001b[32;1m{}/{} statistical tests "
+                       "PASSED\u001b[0m".format(calc_count, max_count,
+                                                count, len(general_results)))
     else:
-        cl.info("[{} of {}]: \u001b[31;1m({}/{} tests passed) General "
-                "statistical tests failed for {}\u001b[0m".format(
-                    calc_count, max_count, count, len(general_results), source))
+        stat_result = ("[{} of {}]: \u001b[31;1m{}/{} statistical tests "
+                       "FAILED\u001b[0m".format(calc_count, max_count,
+                                                count, len(general_results)))
+
+    spectral_res = ""
+    if parameters:
+        cl.verbose("Performing SPECTRAL test")
+        spectral_test = st.SpectralTest(parameters, T=5)
+        spectral_result = spectral_test.get_results()
+        general_results_dict["spectral"] = spectral_result
+
+        if spectral_result["all_passed"]:
+            spectral_res = " || \u001b[32;1mspectral test PASSED\u001b[0m"
+            pass
+        else:
+            spectral_res = " || \u001b[31;1mspectral test FAILED\u001b[0m"
+
+    cl.info("{}{} for {}".format(stat_result, spectral_res, source))
 
     return general_results_dict

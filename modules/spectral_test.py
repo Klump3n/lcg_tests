@@ -20,7 +20,7 @@ class SpectralTest:
         Generate random numbers and so on.
 
         """
-        cl.verbose("Calling spectral_test with parameters {}".format(parameters))
+        cl.debug("Calling spectral_test with parameters {}".format(parameters))
 
         cl.debug("Recursion limit is set to {}".format(sys.getrecursionlimit()))
         new_recursion_limit = 10000
@@ -48,7 +48,30 @@ class SpectralTest:
         Return the results list.
 
         """
-        return self.results
+        all_passed = True
+
+        resdict = dict()
+
+        for t, v in enumerate(self.results):
+
+            if (t < 2):
+                pass
+
+            else:
+                key = "v{}".format(t)
+                resdict[key] = dict()
+                resdict[key]["value"] = v
+
+                if (v > 2**(30/t)):
+                    resdict[key]["pass"] = True
+
+                else:
+                    resdict[key]["pass"] = False
+                    all_passed = False
+
+        resdict["all_passed"] = all_passed
+
+        return resdict
 
     def _step_1(self):
         """
@@ -132,8 +155,10 @@ class SpectralTest:
             self._step_3()
 
         else:
-            cl.verbose("v2 = {}".format( np.sqrt(self._s) ))
-            self.results[self._t] = np.sqrt(self._s)
+            v2 = np.sqrt(self._s)
+            verdict = "\u001b[32;1mpassed\u001b[0m" if v2 > 2**15 else "\u001b[31;1mfailed\u001b[0m"
+            cl.verbose("Test for 2 dimensions passed when v2 = {:.2f} > {}, so it {}".format(v2, 2**15, verdict))
+            self.results[self._t] = v2
             self._intermediate_step_3()
 
     def _intermediate_step_3(self):
@@ -313,5 +338,7 @@ class SpectralTest:
         if (self._k >= 0):       # adjusted index
             self._step_9()
         else:
-            cl.verbose("v{} = {}".format(self._t, np.sqrt(self._s)))
+            vt = np.sqrt(self._s)
+            verdict = "\u001b[32;1mpassed\u001b[0m" if vt > 2**(30/self._t) else "\u001b[31;1mfailed\u001b[0m"
+            cl.verbose("Test for {} dimensions passed when v{} = {:.2f} > {}, so it {}".format(self._t, self._t, vt, 2**15, verdict))
             self.results[self._t] = np.sqrt(self._s)
