@@ -6,11 +6,11 @@ Run the tests for the LCG.
 from util.logging.logger import CoreLog as cl
 import modules.gen_parameters_and_numbers as gpn
 
-import modules.statistical_monobit as monobit
-import modules.statistical_poker as poker
-import modules.statistical_runs as runs
-import modules.statistical_autocorrelation as ac
-import modules.spectral_test as st
+import modules.statistical_test_monobit as monobit
+import modules.statistical_test_poker as poker
+import modules.statistical_test_runs as runs
+import modules.statistical_test_autocorrelation as ac
+import modules.special_test_spectral as st
 
 import numpy as np
 import pickle

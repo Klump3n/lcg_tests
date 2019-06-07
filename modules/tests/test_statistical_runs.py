@@ -6,11 +6,11 @@ Unittests for the runs tests.
 import unittest
 
 try:
-    import modules.statistical_runs as runs
+    import modules.statistical_test_runs as runs
 except ImportError:
     import sys
     sys.path.append("../..")
-    import modules.statistical_runs as runs
+    import modules.statistical_test_runs as runs
 
 from util.logging.logger import CoreLog as cl
 

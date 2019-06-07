@@ -6,11 +6,11 @@ Unittests for the autocorrelation tests.
 import unittest
 
 try:
-    import modules.statistical_autocorrelation as ac
+    import modules.statistical_test_autocorrelation as ac
 except ImportError:
     import sys
     sys.path.append("../..")
-    import modules.statistical_autocorrelation as ac
+    import modules.statistical_test_autocorrelation as ac
 
 from util.logging.logger import CoreLog as cl
 

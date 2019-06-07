@@ -7,13 +7,11 @@ import unittest
 
 
 try:
-    import modules.spectral_test as st
-    import modules.spectral_test_noclass as stn
+    import modules.special_test_spectral as st
 except ImportError:
     import sys
     sys.path.append("../..")
-    import modules.spectral_test as st
-    import modules.spectral_test_noclass as stn
+    import modules.special_test_spectral as st
 
 from util.logging.logger import CoreLog as cl
 

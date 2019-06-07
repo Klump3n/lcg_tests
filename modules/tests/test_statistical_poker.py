@@ -6,11 +6,11 @@ Unittests for the poker tests.
 import unittest
 
 try:
-    import modules.statistical_poker as poker
+    import modules.statistical_test_poker as poker
 except ImportError:
     import sys
     sys.path.append("../..")
-    import modules.statistical_poker as poker
+    import modules.statistical_test_poker as poker
 
 from util.logging.logger import CoreLog as cl
 
