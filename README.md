@@ -28,3 +28,5 @@ your random bits. Some random data is provided in ```random_sequences/```.
 If you want to supply your own random numbers you have to present them in form of a binary sequence string (e.g. "001010101000") and save that to a text file.
 
 The arguments ```-a```, ```-c``` and ```-m``` can be used with one OR two arguments. If one argument is supplied, a random number sequence with that exact argument is generated. If two arguments are used, a random number sequence will be generated for every parameter between the two provided argument values.
+
+The results will be save to an output file (pickled). If you want to force recalculation of existing values, use the ```-f``` flag.
