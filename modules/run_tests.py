@@ -141,6 +141,15 @@ def run_tests(args, numbers_from_file=None):
             # perform the actual calculation
             nums = gpn.gen_nums(parameters)
 
+            if args.print:
+                string = "Random sequence: "
+                for i in range(args.print):
+                    if i < len(nums):
+                        string += "{}, ".format(nums[i])
+                string += "..."
+                cl.info(string)
+
+
             bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
             binary_sequence = gpn.gen_binary_sequence(bin_nums)
 
@@ -204,12 +213,12 @@ def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=N
 
     # generate info strings
     if np.all(general_results):
-        stat_result = ("[{} of {}]: \u001b[32;1m{}/{} statistical tests "
-                       "PASSED\u001b[0m".format(calc_count, max_count,
+        stat_result = ("[{} of {}]: \u001b[32;1m({}/{} passes) statistical "
+                       "tests PASSED\u001b[0m".format(calc_count, max_count,
                                                 count, len(general_results)))
     else:
-        stat_result = ("[{} of {}]: \u001b[31;1m{}/{} statistical tests "
-                       "FAILED\u001b[0m".format(calc_count, max_count,
+        stat_result = ("[{} of {}]: \u001b[31;1m({}/{} passes) statistical "
+                       "tests FAILED\u001b[0m".format(calc_count, max_count,
                                                 count, len(general_results)))
 
     spectral_res = ""

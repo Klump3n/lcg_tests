@@ -59,6 +59,8 @@ def parse_arguments():
                         "scan of m in (a*x + c) mod m, should "
                         "be bigger than 2^11", nargs="+")
 
+    parser.add_argument("-p", "--print", help="print sequence of random "
+                        "numbers to screen", type=int)
     parser.add_argument("-f", "--force", help="force recalculation",
                         action="store_true")
     parser.add_argument("-j", help="number of parallel processes in runs test",
