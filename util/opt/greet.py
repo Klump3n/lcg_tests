@@ -31,7 +31,7 @@ def ngreeting():
         "  {}-           {}=W'".format(color1, color3, reset),
         "              {})F{}".format(color3, reset),
         "              {}]'{}".format(color3, reset),
-        "              {}={}".format(color3, reset)
+        "              {}={}     .mp".format(color3, reset)
     ]
 
     greet = "\n"
