@@ -81,7 +81,7 @@ class SpectralTest:
         Initialization step for dimension t=2.
 
         """
-        cl.verbose("Calculating v2")
+        cl.debug("Calculating v2")
         cl.debug("Step 1 (Initialization)")
 
         self._t = 2
@@ -190,7 +190,7 @@ class SpectralTest:
         cl.debug("Step 4 (Advance t)")
 
         self._t += 1
-        cl.verbose("Calculating v{}".format(self._t))
+        cl.debug("Calculating v{}".format(self._t))
 
         # enlarge matrices
         shape_u_x, shape_u_y = self._mat_U.shape
