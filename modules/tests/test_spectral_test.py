@@ -62,9 +62,12 @@ class Test_GenParametersAndNumbers(unittest.TestCase):
 
         res = spectral.get_results()
 
+        v2 = res["v2"]["value"]
+        v3 = res["v3"]["value"]
+
         # results given by knuth
-        self.assertAlmostEqual(res[2], 67654.37748, 5)
-        self.assertAlmostEqual(res[3],  1017.21089, 5)
+        self.assertAlmostEqual(v2, 67654.37748, 5)
+        self.assertAlmostEqual(v3,  1017.21089, 5)
 
 
 if __name__ == "__main__":
