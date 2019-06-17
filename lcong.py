@@ -53,14 +53,14 @@ def parse_arguments():
 
     parser.add_argument("-a", type=str, help="interval for parameter "
                         "scan of a in (a*x + c) mod m", nargs="+",
-                        default=["33"])
+                        default=["3141592621"])
     parser.add_argument("-c", type=str, help="interval for parameter "
                         "scan of c in (a*x + c) mod m", nargs="+",
-                        default=["0"])
+                        default=["1"])
     parser.add_argument("-m", type=str, help="interval for parameter "
                         "scan of m in (a*x + c) mod m, should "
                         "be bigger than 2^11", nargs="+",
-                        default=["251"])
+                        default=["10 ** 10"])
 
     parser.add_argument("-p", "--print", help="print sequence of random "
                         "numbers to screen", type=int)
@@ -127,6 +127,10 @@ def main():
 
     cl.verbose("Using {} processes in parallel (in (long) runs test)".format(
         args.j))
+
+    if not args.force:
+        cl.info("Skipping parameters where the results are already calculated")
+        cl.info("To disable skipping consider setting the '-f' flag")
 
     # run the tests for the LCG (or the random data provided)
     run_tests.run_tests(args, binary_sequence)
