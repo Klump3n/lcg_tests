@@ -52,12 +52,15 @@ def parse_arguments():
                         default=1)
 
     parser.add_argument("-a", type=str, help="interval for parameter "
-                        "scan of a in (a*x + c) mod m", nargs="+")
+                        "scan of a in (a*x + c) mod m", nargs="+",
+                        default=["33"])
     parser.add_argument("-c", type=str, help="interval for parameter "
-                        "scan of c in (a*x + c) mod m", nargs="+")
+                        "scan of c in (a*x + c) mod m", nargs="+",
+                        default=["0"])
     parser.add_argument("-m", type=str, help="interval for parameter "
                         "scan of m in (a*x + c) mod m, should "
-                        "be bigger than 2^11", nargs="+")
+                        "be bigger than 2^11", nargs="+",
+                        default=["251"])
 
     parser.add_argument("-p", "--print", help="print sequence of random "
                         "numbers to screen", type=int)
