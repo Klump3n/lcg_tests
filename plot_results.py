@@ -11,7 +11,8 @@ Plot the results.
 import sys
 import argparse
 import pickle
-import re
+import numpy as np
+from matplotlib import pyplot as plt
 
 from util.logging.logger import CoreLog as cl
 from util.opt.greet import ngreeting
@@ -123,6 +124,27 @@ def parse_input(input_file):
     return_dict["input_data"] = input_data
     return return_dict
 
+def eval_pass(result_dict):
+    """
+    Evaluate the passing of a test run.
+
+    """
+    mono_pass = result_dict["monobit"]
+    poker_pass = result_dict["poker"]
+    runs_pass = result_dict["runs"]
+    longruns_pass = result_dict["long_runs"]
+    auto_pass = result_dict["autocorrelation"]
+
+    sv2_pass = result_dict["spectral"]["v2"]["pass"]
+    sv3_pass = result_dict["spectral"]["v3"]["pass"]
+    sv4_pass = result_dict["spectral"]["v4"]["pass"]
+    sv5_pass = result_dict["spectral"]["v5"]["pass"]
+
+    stat_passes = mono_pass + poker_pass + runs_pass + longruns_pass + auto_pass
+    spectral_passes = sv2_pass + sv3_pass + sv4_pass + sv5_pass
+
+    return stat_passes, spectral_passes
+
 def main():
     """
     Main entry point.
@@ -153,6 +175,127 @@ def main():
         cl.info(" m is in [{}, {}]".format(mmin, mmax))
         cl.info("Pick ONE value from the ranges to generate a plot")
         sys.exit()
+
+    if args.a:
+        a = int(args.a)
+        if not a >= amin or not a <= amax:
+            cl.error("'a' not in provided range")
+            sys.exit()
+        title = "x0 = {}, a fixed to {}, c and m change".format(x0, a)
+        x_key = "c"
+        y_key = "m"
+        x_range = np.arange(cmin, cmax+1)
+        y_range = np.arange(mmin, mmax+1)
+
+    if args.c:
+        c = int(args.c)
+        if not c >= cmin or not c <= cmax:
+            cl.error("'c' not in provided range")
+            sys.exit()
+        title = "x0 = {}, c fixed to {}, a and m change".format(x0, c)
+        x_key = "a"
+        y_key = "m"
+        x_range = np.arange(amin, amax+1)
+        y_range = np.arange(mmin, mmax+1)
+
+    if args.m:
+        m = int(args.m)
+        if not m >= mmin or not m <= mmax:
+            cl.error("'m' not in provided range")
+            sys.exit()
+        title = "x0 = {}, m fixed to {}, a and c change".format(x0, m)
+        x_key = "a"
+        y_key = "c"
+        x_range = np.arange(amin, amax+1)
+        y_range = np.arange(cmin, cmax+1)
+
+    xx, yy = np.meshgrid(x_range, y_range)
+    stat_res = np.zeros_like(xx)
+    spect_res = np.zeros_like(xx)
+
+    for i, x in enumerate(x_range):
+        for j, y in enumerate(y_range):
+
+            if args.a:
+                stat_passes, spectral_passes = eval_pass(
+                    input_data["input_data"][x0][a][x][y])
+                stat_res[j, i] = stat_passes
+                spect_res[j, i] = spectral_passes
+
+            if args.c:
+                stat_passes, spectral_passes = eval_pass(
+                    input_data["input_data"][x0][x][c][y])
+                stat_res[j, i] = stat_passes
+                spect_res[j, i] = spectral_passes
+
+            if args.m:
+                stat_passes, spectral_passes = eval_pass(
+                    input_data["input_data"][x0][x][y][m])
+                stat_res[j, i] = stat_passes
+                spect_res[j, i] = spectral_passes
+
+    # statistical plot
+    fig, ax = plt.subplots(1)
+    stat_cmap = plt.get_cmap("viridis", 6)
+
+    p = plt.pcolormesh(xx, yy, stat_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=5)
+    cbar = fig.colorbar(p)
+
+    cbar.ax.get_yaxis().set_ticks([])
+    for j, lab in enumerate(["$0$","$1$","$2$","$3$", "$4$", "$5$"]):
+        cbar.ax.text(1.55, (2 * j + 1) / 12.0, lab, ha="left", va="center")
+        cbar.ax.get_yaxis().labelpad = 15
+    cbar.ax.set_ylabel("\nNumber of tests passed", rotation=90)
+
+    xticks = ax.get_xticks()
+    xticks = np.asarray(xticks, dtype=int)
+    ax.set_xticks(xticks[:-1] + 0.5)
+    ax.set_xticklabels(xticks[:-1])
+
+    yticks = ax.get_yticks()
+    yticks = np.asarray(yticks, dtype=int)
+    ax.set_yticks(yticks[:-1] + 0.5)
+    ax.set_yticklabels(yticks[:-1])
+
+    ax.set_xlabel("{}".format(x_key))
+    ax.set_ylabel("{}".format(y_key))
+
+    ax.set_title(title)
+    plt.tight_layout()
+    plt.show()
+
+
+    # # spectral plot
+    # statistical plot
+    fig, ax = plt.subplots(1)
+    stat_cmap = plt.get_cmap("viridis", 5)
+
+    p = plt.pcolormesh(xx, yy, spect_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=4)
+    cbar = fig.colorbar(p)
+
+    cbar.ax.get_yaxis().set_ticks([])
+    for j, lab in enumerate(["$0$","$1$","$2$","$3$", "$4$"]):
+        cbar.ax.text(1.55, (2 * j + 1) / 10.0, lab, ha="left", va="center")
+        cbar.ax.get_yaxis().labelpad = 15
+    cbar.ax.set_ylabel("\nNumber of tests passed", rotation=90)
+
+    xticks = ax.get_xticks()
+    xticks = np.asarray(xticks, dtype=int)
+    ax.set_xticks(xticks[:-1] + 0.5)
+    ax.set_xticklabels(xticks[:-1])
+
+    yticks = ax.get_yticks()
+    yticks = np.asarray(yticks, dtype=int)
+    ax.set_yticks(yticks[:-1] + 0.5)
+    ax.set_yticklabels(yticks[:-1])
+
+    ax.set_xlabel("{}".format(x_key))
+    ax.set_ylabel("{}".format(y_key))
+
+    ax.set_title(title)
+    plt.tight_layout()
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
