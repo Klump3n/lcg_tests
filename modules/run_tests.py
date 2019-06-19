@@ -198,7 +198,8 @@ def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=N
     general_results_dict["long_runs"] = long_runs_result
 
     cl.verbose("Performing AUTOCORRELATION test")
-    autocorrelation_result = ac.autocorrelation_passed(binary_sequence)
+    autocorrelation_result = ac.autocorrelation_passed(binary_sequence,
+                                                       plot=args.plot_ac)
     general_results.append(autocorrelation_result)
     general_results_dict["autocorrelation"] = autocorrelation_result
 

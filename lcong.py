@@ -62,10 +62,14 @@ def parse_arguments():
                         "be bigger than 2^11", nargs="+",
                         default=["10 ** 10"])
 
-    parser.add_argument("-p", "--print", help="print sequence of random "
-                        "numbers to screen", type=int)
+    parser.add_argument("-p", "--print", help="print sequence of length "
+                        "'print' random numbers to screen", type=int)
     parser.add_argument("-f", "--force", help="force recalculation",
                         action="store_true")
+    parser.add_argument("--plot_ac", help="plot the autocorrelation",
+                        action="store_true")
+
+
     parser.add_argument("-j", help="number of parallel processes in runs test",
                         type=int, default=4)
     parser.add_argument("-t", "--test", help="perform unittests and exit",
