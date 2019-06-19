@@ -177,6 +177,7 @@ def run_tests(args, numbers_from_file=None):
                 cl.debug("Writing results to output file")
                 pickle.dump(res_dict, output_file)
 
+        cl.info("Results written to file {}".format(res_file))
 
 def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=None):
     """
