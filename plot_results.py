@@ -39,7 +39,8 @@ def parse_arguments():
     excl_group.add_argument("-c", type=str, help="c in (a*x + c) mod m")
     excl_group.add_argument("-m", type=str, help="m in (a*x + c) mod m")
 
-    parser.add_argument("-o", "--output", help="name of output files")
+    parser.add_argument("-o", "--output", help="name of output files",
+                        action="store_true")
 
     args = parser.parse_args()
     return args
@@ -182,6 +183,7 @@ def main():
             cl.error("'a' not in provided range")
             sys.exit()
         title = "x0 = {}, a fixed to {}, c and m change".format(x0, a)
+        descr = "a_is_{}".format(a)
         x_key = "c"
         y_key = "m"
         x_range = np.arange(cmin, cmax+1)
@@ -195,6 +197,7 @@ def main():
             cl.error("'c' not in provided range")
             sys.exit()
         title = "x0 = {}, c fixed to {}, a and m change".format(x0, c)
+        descr = "c_is_{}".format(c)
         x_key = "a"
         y_key = "m"
         x_range = np.arange(amin, amax+1)
@@ -208,6 +211,7 @@ def main():
             cl.error("'m' not in provided range")
             sys.exit()
         title = "x0 = {}, m fixed to {}, a and c change".format(x0, m)
+        descr = "m_is_{}".format(m)
         x_key = "a"
         y_key = "c"
         x_range = np.arange(amin, amax+1)
@@ -219,6 +223,7 @@ def main():
     xxx, yyy = np.meshgrid(xx_range, yy_range)  # for plotting
     stat_res = np.zeros_like(xx)
     spect_res = np.zeros_like(xx)
+    spect_if_stat_res = np.zeros_like(xx)
 
     for i, x in enumerate(x_range):
         for j, y in enumerate(y_range):
@@ -226,20 +231,25 @@ def main():
             if args.a:
                 stat_passes, spectral_passes = eval_pass(
                     input_data["input_data"][x0][a][x][y])
-                stat_res[j, i] = stat_passes
-                spect_res[j, i] = spectral_passes
 
             if args.c:
                 stat_passes, spectral_passes = eval_pass(
                     input_data["input_data"][x0][x][c][y])
-                stat_res[j, i] = stat_passes
-                spect_res[j, i] = spectral_passes
 
             if args.m:
                 stat_passes, spectral_passes = eval_pass(
                     input_data["input_data"][x0][x][y][m])
-                stat_res[j, i] = stat_passes
-                spect_res[j, i] = spectral_passes
+
+            stat_res[j, i] = stat_passes
+            spect_res[j, i] = spectral_passes
+            if (stat_passes == 5):
+                spect_if_stat_res[j, i] = spectral_passes
+            else:
+                spect_if_stat_res[j, i] = -1
+
+
+    # mask the spect_if_stat array
+    spect_if_stat_res = np.ma.masked_where(spect_if_stat_res == -1, spect_if_stat_res)
 
     # statistical plot
     fig, ax = plt.subplots(1)
@@ -271,9 +281,15 @@ def main():
     ax.set_xlabel("{}".format(x_key))
     ax.set_ylabel("{}".format(y_key))
 
-    ax.set_title(title)
+    ax.set_title("Statistical Test results\n{}".format(title))
     plt.tight_layout()
-    plt.show()
+
+    if args.output:
+        out_name = "{}_statistical_{}.png".format(args.input.split(".")[0], descr)
+        cl.info("Generating {}".format(out_name))
+        plt.savefig(out_name)
+    else:
+        plt.show(0)
 
 
     # spectral plot
@@ -306,9 +322,57 @@ def main():
     ax.set_xlabel("{}".format(x_key))
     ax.set_ylabel("{}".format(y_key))
 
-    ax.set_title(title)
+    ax.set_title("Spectral Test results\n{}".format(title))
     plt.tight_layout()
-    plt.show()
+
+    if args.output:
+        out_name = "{}_spectral_{}.png".format(args.input.split(".")[0], descr)
+        cl.info("Generating {}".format(out_name))
+        plt.savefig(out_name)
+    else:
+        plt.show(0)
+
+
+    # spectral if statistical plot
+    fig, ax = plt.subplots(1)
+    stat_cmap = plt.get_cmap("viridis", 5)
+
+    p = plt.pcolormesh(xxx, yyy, spect_if_stat_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=4)
+    cbar = fig.colorbar(p)
+
+    cbar.ax.get_yaxis().set_ticks([])
+    for j, lab in enumerate(["$0$","$1$","$2$","$3$", "$4$"]):
+        cbar.ax.text(1.55, (2 * j + 1) / 10.0, lab, ha="left", va="center")
+        cbar.ax.get_yaxis().labelpad = 15
+    cbar.ax.set_ylabel("\nNumber of tests passed", rotation=90)
+
+    # some voodoo for the exponential notation stuff
+    ax.ticklabel_format(useOffset=False)
+    plt.gca().get_yaxis().get_major_formatter().set_powerlimits((-1000, 1000))
+
+    xticks = ax.get_xticks()
+    xticks = np.asarray(xticks, dtype=int)
+    ax.set_xticks(xticks[1:-1] + 0.5)
+    ax.set_xticklabels(xticks[1:-1], rotation=90)
+
+    yticks = ax.get_yticks()
+    yticks = np.asarray(yticks, dtype=int)
+    ax.set_yticks(yticks[1:-1] + 0.5)
+    ax.set_yticklabels(yticks[1:-1])
+
+    ax.set_xlabel("{}".format(x_key))
+    ax.set_ylabel("{}".format(y_key))
+
+    ax.set_title("Spectral Test results (where Statistical Tests passed)\n{}".format(title))
+    plt.tight_layout()
+
+    if args.output:
+        out_name = "{}_spectral_if_statistical_{}.png".format(args.input.split(".")[0], descr)
+        cl.info("Generating {}".format(out_name))
+        plt.savefig(out_name)
+    else:
+        plt.show()
+
 
 
 if __name__ == "__main__":
