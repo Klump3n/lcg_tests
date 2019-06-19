@@ -170,7 +170,6 @@ def main():
     mmax = input_data["ranges"]["mmax"]
 
     if not args.a and not args.c and not args.m:
-        cl.info("x0 is in [{}, {}]".format(x0, x0))
         cl.info(" a is in [{}, {}]".format(amin, amax))
         cl.info(" c is in [{}, {}]".format(cmin, cmax))
         cl.info(" m is in [{}, {}]".format(mmin, mmax))
