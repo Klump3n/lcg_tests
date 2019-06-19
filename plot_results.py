@@ -250,6 +250,7 @@ def main():
     # mask the spect_if_stat array
     spect_if_stat_res = np.ma.masked_where(spect_if_stat_res == -1, spect_if_stat_res)
 
+
     # statistical plot
     fig, ax = plt.subplots(1)
     stat_cmap = plt.get_cmap("viridis", 6)
