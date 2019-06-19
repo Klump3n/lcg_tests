@@ -186,6 +186,8 @@ def main():
         y_key = "m"
         x_range = np.arange(cmin, cmax+1)
         y_range = np.arange(mmin, mmax+1)
+        xx_range = np.arange(cmin, cmax+2)
+        yy_range = np.arange(mmin, mmax+2)
 
     if args.c:
         c = int(args.c)
@@ -197,6 +199,8 @@ def main():
         y_key = "m"
         x_range = np.arange(amin, amax+1)
         y_range = np.arange(mmin, mmax+1)
+        xx_range = np.arange(amin, amax+2)
+        yy_range = np.arange(mmin, mmax+2)
 
     if args.m:
         m = int(args.m)
@@ -208,8 +212,11 @@ def main():
         y_key = "c"
         x_range = np.arange(amin, amax+1)
         y_range = np.arange(cmin, cmax+1)
+        xx_range = np.arange(amin, amax+2)
+        yy_range = np.arange(cmin, cmax+2)
 
     xx, yy = np.meshgrid(x_range, y_range)
+    xxx, yyy = np.meshgrid(xx_range, yy_range)  # for plotting
     stat_res = np.zeros_like(xx)
     spect_res = np.zeros_like(xx)
 
@@ -238,7 +245,7 @@ def main():
     fig, ax = plt.subplots(1)
     stat_cmap = plt.get_cmap("viridis", 6)
 
-    p = plt.pcolormesh(xx, yy, stat_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=5)
+    p = plt.pcolormesh(xxx, yyy, stat_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=5)
     cbar = fig.colorbar(p)
 
     cbar.ax.get_yaxis().set_ticks([])
@@ -247,15 +254,19 @@ def main():
         cbar.ax.get_yaxis().labelpad = 15
     cbar.ax.set_ylabel("\nNumber of tests passed", rotation=90)
 
+    # some voodoo for the exponential notation stuff
+    ax.ticklabel_format(useOffset=False)
+    plt.gca().get_yaxis().get_major_formatter().set_powerlimits((-1000, 1000))
+
     xticks = ax.get_xticks()
     xticks = np.asarray(xticks, dtype=int)
-    ax.set_xticks(xticks[:-1] + 0.5)
-    ax.set_xticklabels(xticks[:-1])
+    ax.set_xticks(xticks[1:-1] + 0.5)
+    ax.set_xticklabels(xticks[1:-1], rotation=90)
 
     yticks = ax.get_yticks()
     yticks = np.asarray(yticks, dtype=int)
-    ax.set_yticks(yticks[:-1] + 0.5)
-    ax.set_yticklabels(yticks[:-1])
+    ax.set_yticks(yticks[1:-1] + 0.5)
+    ax.set_yticklabels(yticks[1:-1])
 
     ax.set_xlabel("{}".format(x_key))
     ax.set_ylabel("{}".format(y_key))
@@ -265,12 +276,11 @@ def main():
     plt.show()
 
 
-    # # spectral plot
-    # statistical plot
+    # spectral plot
     fig, ax = plt.subplots(1)
     stat_cmap = plt.get_cmap("viridis", 5)
 
-    p = plt.pcolormesh(xx, yy, spect_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=4)
+    p = plt.pcolormesh(xxx, yyy, spect_res, edgecolor="k", cmap=stat_cmap, vmin=0, vmax=4)
     cbar = fig.colorbar(p)
 
     cbar.ax.get_yaxis().set_ticks([])
@@ -279,15 +289,19 @@ def main():
         cbar.ax.get_yaxis().labelpad = 15
     cbar.ax.set_ylabel("\nNumber of tests passed", rotation=90)
 
+    # some voodoo for the exponential notation stuff
+    ax.ticklabel_format(useOffset=False)
+    plt.gca().get_yaxis().get_major_formatter().set_powerlimits((-1000, 1000))
+
     xticks = ax.get_xticks()
     xticks = np.asarray(xticks, dtype=int)
-    ax.set_xticks(xticks[:-1] + 0.5)
-    ax.set_xticklabels(xticks[:-1])
+    ax.set_xticks(xticks[1:-1] + 0.5)
+    ax.set_xticklabels(xticks[1:-1], rotation=90)
 
     yticks = ax.get_yticks()
     yticks = np.asarray(yticks, dtype=int)
-    ax.set_yticks(yticks[:-1] + 0.5)
-    ax.set_yticklabels(yticks[:-1])
+    ax.set_yticks(yticks[1:-1] + 0.5)
+    ax.set_yticklabels(yticks[1:-1])
 
     ax.set_xlabel("{}".format(x_key))
     ax.set_ylabel("{}".format(y_key))
