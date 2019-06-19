@@ -13,6 +13,12 @@ that they are not at all random, but fall into certain hyperplanes.
 This testing suite does not do anything as fancy as the DIEHARD suite (or
 similar suites for that matter). Do not expect new tests.
 
+# Contents
+
+This package contains two scripts.
+ * ```lcong.py``` is a script that can create pseudo random numbers with a linear congruential generator (LCG) with varying paramters. It then performs statistical tests and the spectral test on these numbers. It can also read in binary numbers from a text file and perform the statistical tests on them. The results of the LCG analysis are stored in pickled files.
+ * ```plot_results.py``` is a script that reads the pickled results files and can display the results.
+
 # Usage
 
 Run ```lcong.py -h``` for a full list of options. For a bit more information about which tests are failing
@@ -39,7 +45,6 @@ The stored results can be viewed with the script ```plot_results.py```. Use the 
 [19.06.2019 19:25:29,154; INFO]  c is in [0, 10]
 [19.06.2019 19:25:29,154; INFO]  m is in [251232131, 251232131]
 [19.06.2019 19:25:29,154; INFO] Pick ONE value from the ranges to generate a plot
-
 ```
 
 We have done a scan with the fixed value ```m = 251232131```, while a and c vary. So now set the ```-m 251232131``` flag and look at the results. They can be saved into .png files with the ```-o``` flag.
