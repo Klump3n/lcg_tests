@@ -18,7 +18,7 @@ similar suites for that matter). Do not expect new tests.
 ## Contents
 
 This package contains two scripts.
- * ```lcong.py``` is a script that can create pseudo random numbers with an LCG with varying paramters. It then performs statistical tests and the spectral test on these numbers. It can also read in binary numbers from a text file and perform the statistical tests on them. The results of the LCG analysis are stored in pickled files.
+ * ```lcong.py``` is a script that can create pseudo random numbers with an LCG with varying parameters. It then performs statistical tests and the spectral test on these numbers. It can also read in binary numbers from a text file and perform the statistical tests on them. The results of the LCG analysis are stored in pickled files.
  * ```plot_results.py``` is a script that reads the pickled results files and can display the results.
 
 ## Usage
@@ -97,15 +97,20 @@ A parameter sweep is also possible. For this we simply supply the command line a
 [...]
 ```
 
-In case the calculation gets interrupted and picked up again at a later time, already calculated values will be read from the pickled output file and thus skipped. This can save a lot of time. In order to force recalculation for every timestep, we can supply the ```-f``` flag.
+In case the calculation gets interrupted and picked up again at a later time, already calculated values will be read from the pickled output file and thus skipped. This can save a lot of time. In order to force recalculation for every set of parameters, we can supply the ```-f``` flag.
 
 ### Checking your own random binary sequences
 
-To perform the tests on a sequence of random bits that you have you can run
-```lcong.py -i RANDOM_DATA_FILE```, where RANDOM_DATA_FILE contains
-your random bits. Some random data is provided in the directory ```random_sequences/```.
+To perform the tests on a sequence of random bits (stored in a text file) you can run ```./lcong.py -i random_sequences/rand0```.
 
-If you want to supply your own random numbers you have to present them in form of a binary sequence string (e.g. "001010101000") and save that to a text file.
+```
+[19.06.2019 20:35:07,629; INFO] Testing random numbers from file random_sequences/rand0
+[19.06.2019 20:35:07,629; INFO] Skipping parameters where the results are already calculated
+[19.06.2019 20:35:07,629; INFO] To disable skipping consider setting the '-f' flag
+[19.06.2019 20:35:08,642; INFO] [1 of 1]: (5/5 passes) statistical tests PASSED for random data from file
+```
+
+Some random sequences are provided in the ```random_sequences``` directory.
 
 ### Analyzing the results
 
