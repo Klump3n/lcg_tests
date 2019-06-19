@@ -70,12 +70,14 @@ def parse_input(input_file):
     """
     # see what we have to expect from this input file
     try:
-        res = input_file.split("_")
-        res.remove("results/results")
+        res = input_file.split("results/results_")
+        res.pop(0)
+        res = res[0].split("_")
         res.remove("x0")
         res.remove("a")
         res.remove("c")
         res.remove("m")
+
     except ValueError:
         cl.error("Could not determine parameter ranges from input file name")
         sys.exit()
