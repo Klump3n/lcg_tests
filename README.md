@@ -8,6 +8,8 @@ but fail the spectral test. Apparently the spectral test revealed that people
 used crappy "random numbers" for a very long time because they were not aware
 that they are not at all random, but fall into certain hyperplanes.
 
+For the theory part of linear congruential generators (LCGs) please refer to [the corresponding seminar homepage](https://zufallsmaschiness19.github.io/LCG/lcg.html).
+
 ### What this is NOT
 
 This testing suite does not do anything as fancy as the DIEHARD suite (or
@@ -16,12 +18,14 @@ similar suites for that matter). Do not expect new tests.
 ## Contents
 
 This package contains two scripts.
- * ```lcong.py``` is a script that can create pseudo random numbers with a linear congruential generator (LCG) with varying paramters. It then performs statistical tests and the spectral test on these numbers. It can also read in binary numbers from a text file and perform the statistical tests on them. The results of the LCG analysis are stored in pickled files.
+ * ```lcong.py``` is a script that can create pseudo random numbers with an LCG with varying paramters. It then performs statistical tests and the spectral test on these numbers. It can also read in binary numbers from a text file and perform the statistical tests on them. The results of the LCG analysis are stored in pickled files.
  * ```plot_results.py``` is a script that reads the pickled results files and can display the results.
 
 ## Usage
 
-Testing a specific combination of parameters is done like this: ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1"```. The results are then logged to the screen
+### Single sets of parameters
+
+Testing a specific combination of parameters (in this case this is the set of parameters for the C++ LCG) is done like this: ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1"```. The results are then logged to the screen.
 ```
 [19.06.2019 19:52:09,753; INFO] Starting LCG testing
 [19.06.2019 19:52:09,753; INFO] Skipping parameters where the results are already calculated
@@ -31,7 +35,9 @@ Testing a specific combination of parameters is done like this: ```./lcong.py -x
 [19.06.2019 19:52:10,787; INFO] [1 of 1]: (5/5 passes) statistical tests PASSED || spectral test PASSED for parameters {'x0': 1, 'a': 1103515245, 'c': 12345, 'm': 2147483647}
 [19.06.2019 19:52:10,787; INFO] Results written to file [...]/lcg_tests/results/results_x0_1_a_1103515245_1103515245_c_12345_12345_m_2147483647_2147483647.pickle
 ```
-or more verbose ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1" -l verbose```.
+
+Or more verbose:
+```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1" -l verbose```
 
 ```
 [19.06.2019 19:56:14,913; VERBOSE] starting logging
@@ -71,32 +77,59 @@ or more verbose ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1" -l verb
 [19.06.2019 19:56:15,954; INFO] Results written to file [...]/lcg_tests/results/results_x0_1_a_1103515245_1103515245_c_12345_12345_m_2147483647_2147483647.pickle
 ```
 
+Test results are stored in an output file in the ```results``` directory.
 
+### Parameter sweeps
 
-Run ```lcong.py -h``` for a full list of options. For a bit more information about which tests are failing
-and which are succeeding you can use the ```-l verbose``` flag (or even ```-l debug```).
+A parameter sweep is also possible. For this we simply supply the command line arguments ```-a```, ```-c``` and/or ```-m``` with two values: ```./lcong.py -x 1 -a "7**7 - 10" "7**7 + 10" -c 0 -m "2**31 - 10" "2**31 + 10"```
+
+```
+[19.06.2019 20:03:10,570; INFO] Starting LCG testing
+[19.06.2019 20:03:10,570; INFO] Skipping parameters where the results are already calculated
+[19.06.2019 20:03:10,570; INFO] To disable skipping consider setting the '-f' flag
+[19.06.2019 20:03:10,571; INFO] Created 441 parameters
+[19.06.2019 20:03:10,571; INFO] At one second per check this will take about 441 seconds (or 7.35 minutes; or 0.12 hours)
+[19.06.2019 20:03:11,603; INFO] [1 of 441]: (5/5 passes) statistical tests PASSED || spectral test FAILED for parameters {'x0': 1, 'a': 823533, 'c': 0, 'm': 2147483638}
+[19.06.2019 20:03:12,653; INFO] [2 of 441]: (4/5 passes) statistical tests FAILED || spectral test FAILED for parameters {'x0': 1, 'a': 823534, 'c': 0, 'm': 2147483638}
+[19.06.2019 20:03:13,699; INFO] [3 of 441]: (4/5 passes) statistical tests FAILED || spectral test FAILED for parameters {'x0': 1, 'a': 823535, 'c': 0, 'm': 2147483638}
+[19.06.2019 20:03:14,749; INFO] [4 of 441]: (4/5 passes) statistical tests FAILED || spectral test FAILED for parameters {'x0': 1, 'a': 823536, 'c': 0, 'm': 2147483638}
+[19.06.2019 20:03:15,804; INFO] [5 of 441]: (3/5 passes) statistical tests FAILED || spectral test FAILED for parameters {'x0': 1, 'a': 823537, 'c': 0, 'm': 2147483638}
+[...]
+```
+
+In case the calculation gets interrupted and picked up again at a later time, already calculated values will be read from the pickled output file and thus skipped. This can save a lot of time. In order to force recalculation for every timestep, we can supply the ```-f``` flag.
+
+### Checking your own random binary sequences
 
 To perform the tests on a sequence of random bits that you have you can run
-```lcong.py -f RANDOM_DATA_FILE [-l verbose]```, where RANDOM_DATA_FILE contains
-your random bits. Some random data is provided in ```random_sequences/```.
-
-* rand* are from random.org
-* benson_rand is from a quantum random number generator
+```lcong.py -i RANDOM_DATA_FILE```, where RANDOM_DATA_FILE contains
+your random bits. Some random data is provided in the directory ```random_sequences/```.
 
 If you want to supply your own random numbers you have to present them in form of a binary sequence string (e.g. "001010101000") and save that to a text file.
 
-The arguments ```-a```, ```-c``` and ```-m``` can be used with one OR two arguments. If one argument is supplied, a random number sequence with that exact argument is generated. If two arguments are used, a random number sequence will be generated for every parameter between the two provided argument values.
+Run ```lcong.py -h``` for a full list of options.
 
-The results will be save to an output file (pickled). If you want to force recalculation of existing values, use the ```-f``` flag.
+### Analyzing the results
 
-The stored results can be viewed with the script ```plot_results.py```. Use the ```-i``` argument followed by the results*.pickle file.After some checks you are presented with three lists.
+The stored results can be viewed with the script ```plot_results.py```. Use the ```-i``` argument followed by the results*.pickle file.After some checks you are presented with three lists: ```./plot_results.py -i [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle```
 
 ```
-[19.06.2019 19:25:29,152; INFO] Using results/results_x0_1_a_1_10_c_0_10_m_251232131_251232131.pickle
-[19.06.2019 19:25:29,154; INFO]  a is in [1, 10]
-[19.06.2019 19:25:29,154; INFO]  c is in [0, 10]
-[19.06.2019 19:25:29,154; INFO]  m is in [251232131, 251232131]
-[19.06.2019 19:25:29,154; INFO] Pick ONE value from the ranges to generate a plot
+[19.06.2019 20:15:02,063; INFO] Using [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle
+[19.06.2019 20:15:02,067; INFO]  a is in [823533, 823553]
+[19.06.2019 20:15:02,067; INFO]  c is in [0, 0]
+[19.06.2019 20:15:02,067; INFO]  m is in [2147483638, 2147483658]
+[19.06.2019 20:15:02,067; INFO] Pick ONE value from the ranges to generate a plot
 ```
 
-We have done a scan with the fixed value ```m = 251232131```, while a and c vary. So now set the ```-m 251232131``` flag and look at the results. They can be saved into .png files with the ```-o``` flag.
+We have done a scan with the fixed value ```c = 0```, while a and c vary. So now set the ```-c 0``` flag.
+```./plot_results.py -i [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle -c 0```
+
+The figures that now pop up can be stored next to the pickled results files in form of .png images. To do this append the ```-o``` flag: ```./plot_results.py -i [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle -c 0 -o```
+
+```
+[19.06.2019 20:18:38,483; INFO] Using [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle
+[19.06.2019 20:18:38,579; INFO] Generating [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_statistical_c_is_0.png
+[19.06.2019 20:18:38,835; INFO] Generating [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_spectral_c_is_0.png
+[19.06.2019 20:18:38,974; INFO] Generating [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_spectral_if_statistical_c_is_0.png
+```
+
