@@ -107,8 +107,6 @@ your random bits. Some random data is provided in the directory ```random_sequen
 
 If you want to supply your own random numbers you have to present them in form of a binary sequence string (e.g. "001010101000") and save that to a text file.
 
-Run ```lcong.py -h``` for a full list of options.
-
 ### Analyzing the results
 
 The stored results can be viewed with the script ```plot_results.py```. Use the ```-i``` argument followed by the results*.pickle file.After some checks you are presented with three lists: ```./plot_results.py -i [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658.pickle```
@@ -133,3 +131,13 @@ The figures that now pop up can be stored next to the pickled results files in f
 [19.06.2019 20:18:38,974; INFO] Generating [...]/lcg_tests/results/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_spectral_if_statistical_c_is_0.png
 ```
 
+The images show how many of the respective tests have passed. The ```spectral_if_statistical``` image shows the results of the spectral test on the condition that _all_ statistical tests have been passed.
+
+#### Image of the statistical tests
+![](doc/img/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_statistical_c_is_0.png)
+
+#### Image of the spectral tests
+![](doc/img/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_spectral_c_is_0.png)
+
+#### Image of the spectral test (only where all statistical tests have passed)
+![](doc/img/results_x0_1_a_823533_823553_c_0_0_m_2147483638_2147483658_spectral_if_statistical_c_is_0.png)
