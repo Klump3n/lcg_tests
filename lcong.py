@@ -68,7 +68,8 @@ def parse_arguments():
                         action="store_true")
     parser.add_argument("--plot_ac", help="plot the autocorrelation",
                         action="store_true")
-
+    parser.add_argument("--plot_spectral", help="plot X_{n+1} vs X_{n}",
+                        action="store_true")
 
     parser.add_argument("-j", help="number of parallel processes in runs test",
                         type=int, default=4)

@@ -5,6 +5,7 @@ Run the tests for the LCG.
 """
 from util.logging.logger import CoreLog as cl
 import modules.gen_parameters_and_numbers as gpn
+from matplotlib import pyplot as plt
 
 import modules.statistical_test_monobit as monobit
 import modules.statistical_test_poker as poker
@@ -149,6 +150,16 @@ def run_tests(args, numbers_from_file=None):
                 string += "..."
                 cl.info(string)
 
+            if args.plot_spectral:
+                plt.figure()
+                xx = np.asarray(nums)[0:-1] / m
+                yy = np.asarray(nums)[1:] / m
+                plt.scatter(xx, yy, s=1)
+                plt.xlim([0, 1])
+                plt.ylim([0, 1])
+                plt.xlabel(r"$X_{n}$")
+                plt.ylabel(r"$X_{n+1}$")
+                plt.show()
 
             bin_nums = gpn.gen_binary_nums(nums, modulus=parameters["m"])
             binary_sequence = gpn.gen_binary_sequence(bin_nums)
@@ -231,7 +242,6 @@ def sequence_test(args, binary_sequence, calc_count=1, max_count=1, parameters=N
 
         if spectral_result["all_passed"]:
             spectral_res = " || \u001b[32;1mspectral test PASSED\u001b[0m"
-            pass
         else:
             spectral_res = " || \u001b[31;1mspectral test FAILED\u001b[0m"
 
