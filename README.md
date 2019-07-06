@@ -25,7 +25,7 @@ This package contains two scripts.
 
 ### Single sets of parameters
 
-Testing a specific combination of parameters (in this case this is the set of parameters for the C++ LCG) is done like this: ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1"```. The results are then logged to the screen.
+Testing a specific combination of parameters is done like this: ```./lcong.py -x 1 -a 1103515245 -c 12345 -m "2**31 - 1"```. The results are then logged to the screen.
 ```
 [19.06.2019 19:52:09,753; INFO] Starting LCG testing
 [19.06.2019 19:52:09,753; INFO] Skipping parameters where the results are already calculated
